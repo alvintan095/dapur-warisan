@@ -1,0 +1,1750 @@
+<!doctype html>
+<html lang="id-ID">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dapur Warisan</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,500;0,600;0,700;1,500&family=Nunito:wght@400;500;600;700;800&display=swap" />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+
+    <!-- =========================================================
+         HALAMAN MASUK / DAFTAR
+         ========================================================= -->
+    <div id="auth" class="auth">
+      <aside class="auth-hero">
+        <img src="https://images.unsplash.com/photo-1539755530862-00f623c00f52?w=1400&h=1050&fit=crop&auto=format" alt="Meja makan penuh hidangan rumahan Indonesia" />
+        <div class="auth-hero-text">
+          <div class="brand-text"><i data-lucide="book-heart" class="accent"></i> Dapur Warisan</div>
+          <div>
+            <p class="quote">“Resep terbaik adalah yang diwariskan dengan cinta.”</p>
+            <p>Simpan resep keluarga, susun menu mingguan, dan belanja tanpa lupa — bersama-sama.</p>
+          </div>
+        </div>
+      </aside>
+
+      <main class="auth-panel">
+        <div class="auth-box">
+          <div class="brand-text mobile-only"><i data-lucide="book-heart" class="primary"></i> Dapur Warisan</div>
+          <h1 id="auth-title" class="title">Selamat datang kembali</h1>
+          <p id="auth-subtitle" class="muted">Masuk untuk melihat resep dan menu keluarga.</p>
+
+          <div class="tabs" role="tablist">
+            <button type="button" class="tab is-active" data-tab="masuk" role="tab">Masuk</button>
+            <button type="button" class="tab" data-tab="daftar" role="tab">Daftar</button>
+          </div>
+
+          <form id="auth-form" class="stack" novalidate>
+            <label class="field only-register">
+              <span>Nama lengkap</span>
+              <input name="nama" placeholder="Nama Anda" />
+              <small class="error" data-error="nama"></small>
+            </label>
+            <label class="field">
+              <span>Email</span>
+              <input name="email" type="email" placeholder="nama@email.com" />
+              <small class="error" data-error="email"></small>
+            </label>
+            <label class="field">
+              <span>Password</span>
+              <div class="input-with-button">
+                <input name="password" type="password" placeholder="Minimal 6 karakter" />
+                <button type="button" id="toggle-password" class="icon-only" aria-label="Tampilkan password"><i data-lucide="eye"></i></button>
+              </div>
+              <small class="error" data-error="password"></small>
+            </label>
+            <label class="field only-register">
+              <span>Kode keluarga (opsional)</span>
+              <input name="kode" class="code-input" placeholder="KODE-1234" />
+              <small class="hint">Minta kode ke admin keluarga, atau kosongkan untuk membuat grup baru.</small>
+            </label>
+            <div class="right only-login"><button type="button" class="link">Lupa password?</button></div>
+            <button type="submit" id="auth-submit" class="btn btn-primary btn-block btn-lg">Masuk</button>
+          </form>
+        </div>
+      </main>
+    </div>
+
+    <!-- =========================================================
+         APLIKASI (tampil setelah masuk)
+         ========================================================= -->
+    <div id="app" class="layout" hidden>
+
+      <!-- Menu samping (desktop) -->
+      <aside class="sidebar">
+        <button type="button" class="brand" data-go="beranda">
+          <span class="brand-mark"><i data-lucide="book-heart"></i></span>Dapur Warisan
+        </button>
+        <nav class="side-nav">
+          <button type="button" class="nav-link" data-go="beranda"><i data-lucide="house"></i>Beranda</button>
+          <button type="button" class="nav-link" data-go="resep"><i data-lucide="book-open"></i>Koleksi Resep</button>
+          <button type="button" class="nav-link" data-go="menu"><i data-lucide="calendar-days"></i>Menu Mingguan</button>
+          <button type="button" class="nav-link" data-go="belanja"><i data-lucide="shopping-basket"></i>Daftar Belanja</button>
+          <button type="button" class="nav-link" data-go="keluarga"><i data-lucide="users"></i>Keluarga</button>
+          <button type="button" class="nav-link" data-go="profil"><i data-lucide="user-round"></i>Profil</button>
+        </nav>
+        <div class="family-box">
+          <p class="family-name">Keluarga</p>
+          <div class="avatar-group"></div>
+        </div>
+      </aside>
+
+      <!-- Bilah atas -->
+      <header class="topbar">
+        <div class="topbar-inner">
+          <span class="brand-small"><i data-lucide="book-heart"></i>Dapur Warisan</span>
+          <button type="button" class="search-pill" data-go="resep"><i data-lucide="search"></i><span>Cari resep keluarga…</span></button>
+          <button type="button" class="profile-button" data-go="profil" aria-label="Profil"><span class="avatar" id="top-avatar"></span></button>
+        </div>
+      </header>
+
+      <main class="content">
+
+        <!-- ---------- BERANDA ---------- -->
+        <section class="page" data-page="beranda">
+          <header class="home-header">
+            <div>
+              <p class="eyebrow" id="home-date"></p>
+              <h1 class="title"><span id="home-greeting"></span><br /><em class="primary">Hari ini masak apa?</em></h1>
+            </div>
+            <div class="quick-actions">
+              <button type="button" class="quick" data-go="form"><span class="quick-icon"><i data-lucide="plus"></i></span>Tambah Resep</button>
+              <button type="button" class="quick" data-go="menu"><span class="quick-icon"><i data-lucide="calendar-days"></i></span>Susun Menu</button>
+              <button type="button" class="quick" data-go="belanja"><span class="quick-icon"><i data-lucide="shopping-basket"></i></span>Daftar Belanja</button>
+            </div>
+          </header>
+
+          <section class="card padded">
+            <div class="section-head">
+              <h2 class="heading">Menu Hari Ini</h2>
+              <button type="button" class="btn btn-ghost" data-go="menu">Ubah menu <i data-lucide="arrow-right"></i></button>
+            </div>
+            <div class="today-grid" id="home-today"></div>
+          </section>
+
+          <section>
+            <div class="section-head">
+              <h2 class="heading-lg">Resep Terbaru</h2>
+              <button type="button" class="btn btn-ghost" data-go="resep">Lihat semua <i data-lucide="arrow-right"></i></button>
+            </div>
+            <div class="scroller" id="home-recent"></div>
+          </section>
+
+          <section class="heirloom" id="home-heirloom" hidden>
+            <div class="heirloom-photo"><img alt="" /></div>
+            <div class="heirloom-text">
+              <span class="pill-accent">Resep Warisan</span>
+              <h2 class="heading-lg"></h2>
+              <p class="heirloom-story"></p>
+              <p class="heirloom-origin"></p>
+              <button type="button" class="btn btn-primary">Buka resep <i data-lucide="arrow-right"></i></button>
+            </div>
+          </section>
+
+          <section id="home-favorites-section">
+            <div class="section-head"><h2 class="heading-lg">Resep Favorit Keluarga</h2></div>
+            <div class="card-grid" id="home-favorites"></div>
+          </section>
+        </section>
+
+        <!-- ---------- KOLEKSI RESEP ---------- -->
+        <section class="page" data-page="resep">
+          <h1 class="title">Koleksi Resep</h1>
+          <p class="muted" id="collection-count"></p>
+
+          <div class="toolbar">
+            <div class="search-box">
+              <i data-lucide="search"></i>
+              <input id="collection-search" placeholder="Cari resep atau bahan, mis. santan…" />
+            </div>
+            <button type="button" class="btn btn-secondary" id="filter-toggle"><i data-lucide="sliders-horizontal"></i><span class="hide-mobile">Filter</span></button>
+            <select id="collection-sort" class="hide-mobile sort-select" aria-label="Urutkan">
+              <option>Terbaru</option>
+              <option>Favorit</option>
+              <option>Waktu masak</option>
+            </select>
+          </div>
+
+          <div class="panel filters" id="filters" hidden>
+            <label class="field">
+              <span id="max-time-label">Waktu masak maks: 5 jam</span>
+              <input type="range" id="max-time" min="15" max="300" step="15" value="300" />
+            </label>
+            <label class="field">
+              <span>Asal resep</span>
+              <select id="origin-filter"><option>Semua</option></select>
+            </label>
+          </div>
+
+          <div class="chips" id="category-chips"></div>
+          <div class="card-grid wide" id="collection-list"></div>
+
+          <div class="empty" id="collection-empty" hidden>
+            <span class="empty-icon"><i data-lucide="book-open"></i></span>
+            <h3 class="heading">Belum ada resep di sini</h3>
+            <p class="muted">Belum ada resep. Yuk tambah resep pertama keluarga!</p>
+            <button type="button" class="btn btn-primary" data-go="form"><i data-lucide="plus"></i>Tambah Resep</button>
+          </div>
+
+          <button type="button" class="btn btn-primary fab" data-go="form"><i data-lucide="plus"></i>Tambah Resep</button>
+        </section>
+
+        <!-- ---------- DETAIL RESEP ---------- -->
+        <section class="page narrow-5xl" data-page="detail">
+          <button type="button" class="btn btn-ghost back no-print" data-go="resep"><i data-lucide="arrow-left"></i>Koleksi Resep</button>
+
+          <div class="detail-photo">
+            <img id="detail-img" alt="" />
+            <button type="button" class="fav-btn no-print" id="detail-fav" aria-label="Favorit"><i data-lucide="heart"></i></button>
+          </div>
+
+          <div class="detail-grid">
+            <div>
+              <span class="tag" id="detail-cat"></span>
+              <h1 class="title-xl" id="detail-title"></h1>
+              <p class="lead" id="detail-desc"></p>
+
+              <dl class="stats">
+                <div><i data-lucide="clock"></i><dt>Waktu masak</dt><dd id="detail-time"></dd></div>
+                <div><i data-lucide="users"></i><dt>Porsi</dt><dd id="detail-servings"></dd></div>
+                <div><i data-lucide="gauge"></i><dt>Kesulitan</dt><dd id="detail-difficulty"></dd></div>
+              </dl>
+
+              <figure class="story" id="detail-story-box">
+                <figcaption><i data-lucide="chef-hat"></i>Resep dari: <span id="detail-origin"></span></figcaption>
+                <blockquote id="detail-story"></blockquote>
+              </figure>
+
+              <h2 class="heading-lg spaced">Cara Memasak</h2>
+              <ol class="steps" id="detail-steps"></ol>
+            </div>
+
+            <aside class="detail-side">
+              <div class="card padded-sm">
+                <div class="section-head tight">
+                  <h2 class="heading">Bahan-bahan</h2>
+                  <div class="servings" aria-label="Atur porsi">
+                    <button type="button" id="servings-minus" aria-label="Kurangi porsi"><i data-lucide="minus"></i></button>
+                    <span id="servings-value"></span>
+                    <button type="button" id="servings-plus" aria-label="Tambah porsi"><i data-lucide="plus"></i></button>
+                  </div>
+                </div>
+                <ul class="check-list" id="detail-ingredients"></ul>
+              </div>
+
+              <div class="action-grid no-print">
+                <button type="button" class="btn btn-primary span-2" id="detail-add-menu"><i data-lucide="calendar-plus"></i>Tambah ke Menu</button>
+                <button type="button" class="btn btn-secondary" id="detail-timer"><i data-lucide="timer"></i>Timer</button>
+                <button type="button" class="btn btn-secondary" onclick="window.print()"><i data-lucide="printer"></i>Cetak</button>
+                <button type="button" class="btn btn-secondary" id="detail-edit"><i data-lucide="pencil"></i>Edit</button>
+                <button type="button" class="btn btn-ghost danger" id="detail-delete"><i data-lucide="trash-2"></i>Hapus</button>
+              </div>
+            </aside>
+          </div>
+        </section>
+
+        <!-- ---------- FORM TAMBAH / EDIT RESEP ---------- -->
+        <section class="page narrow-3xl with-savebar" data-page="form">
+          <button type="button" class="btn btn-ghost back" id="form-back"><i data-lucide="arrow-left"></i>Kembali</button>
+          <h1 class="title" id="form-title">Tambah Resep Baru</h1>
+          <p class="muted">Tulis resep seperti sedang menceritakannya ke cucu.</p>
+
+          <form id="recipe-form" class="stack-lg" novalidate>
+            <div class="dropzone" id="dropzone">
+              <img id="dropzone-img" alt="Foto resep" hidden />
+              <div class="dropzone-text" id="dropzone-text">
+                <i data-lucide="image-plus"></i>
+                <p><strong>Seret foto ke sini atau klik untuk memilih</strong></p>
+                <p class="small muted">JPG atau PNG, rasio 4:3 paling bagus</p>
+              </div>
+              <input type="file" id="photo-input" accept="image/*" hidden />
+            </div>
+
+            <section class="panel form-card">
+              <h2 class="heading">Informasi Dasar</h2>
+              <label class="field">
+                <span>Judul resep</span>
+                <input name="title" placeholder="mis. Sayur Lodeh Mbah Uti" />
+                <small class="error" data-error="title"></small>
+              </label>
+              <label class="field">
+                <span>Deskripsi singkat</span>
+                <textarea name="desc" rows="2" placeholder="Gurih, berkuah santan, cocok untuk makan siang."></textarea>
+              </label>
+              <div class="two-cols">
+                <label class="field"><span>Kategori</span><select name="cat" id="form-category"></select></label>
+                <label class="field">
+                  <span>Tingkat kesulitan</span>
+                  <select name="difficulty"><option>Mudah</option><option>Sedang</option><option>Sulit</option></select>
+                </label>
+                <div class="field">
+                  <span>Waktu masak (menit)</span>
+                  <div class="stepper" data-step="5"><button type="button" data-dir="-1" aria-label="Kurangi"><i data-lucide="minus"></i></button><output name="time">30</output><button type="button" data-dir="1" aria-label="Tambah"><i data-lucide="plus"></i></button></div>
+                </div>
+                <div class="field">
+                  <span>Porsi</span>
+                  <div class="stepper" data-step="1"><button type="button" data-dir="-1" aria-label="Kurangi"><i data-lucide="minus"></i></button><output name="servings">4</output><button type="button" data-dir="1" aria-label="Tambah"><i data-lucide="plus"></i></button></div>
+                </div>
+              </div>
+            </section>
+
+            <section class="panel form-card">
+              <h2 class="heading">Asal &amp; Kenangan</h2>
+              <label class="field">
+                <span>Asal resep</span>
+                <input name="origin" placeholder="mis. Nenek Ratna" />
+                <small class="hint">Siapa yang pertama kali memasak resep ini?</small>
+              </label>
+              <label class="field">
+                <span>Cerita / kenangan</span>
+                <textarea name="story" rows="3" placeholder="Ceritakan kapan resep ini biasa dimasak…"></textarea>
+              </label>
+            </section>
+
+            <section class="panel form-card" id="ingredients-card">
+              <h2 class="heading">Bahan-bahan</h2>
+              <p class="error" data-error="ingredients"></p>
+              <div id="ingredient-rows" class="stack-sm"></div>
+              <button type="button" class="btn btn-secondary dashed" id="add-ingredient"><i data-lucide="plus"></i>Tambah bahan</button>
+            </section>
+
+            <section class="panel form-card" id="steps-card">
+              <h2 class="heading">Langkah Memasak</h2>
+              <p class="error" data-error="steps"></p>
+              <div id="step-rows" class="stack-sm"></div>
+              <button type="button" class="btn btn-secondary dashed" id="add-step"><i data-lucide="plus"></i>Tambah langkah</button>
+            </section>
+          </form>
+
+          <div class="savebar">
+            <div class="savebar-inner">
+              <button type="button" class="btn btn-secondary" id="form-cancel">Batal</button>
+              <button type="submit" form="recipe-form" class="btn btn-primary"><i data-lucide="check"></i>Simpan Resep</button>
+            </div>
+          </div>
+        </section>
+
+        <!-- ---------- MENU MINGGUAN ---------- -->
+        <section class="page" data-page="menu">
+          <div class="page-head">
+            <div>
+              <h1 class="title">Perencana Menu</h1>
+              <p class="muted" id="plan-count"></p>
+            </div>
+            <div class="week-nav">
+              <button type="button" class="btn btn-icon" id="week-prev" aria-label="Minggu sebelumnya"><i data-lucide="chevron-left"></i></button>
+              <span id="week-label"></span>
+              <button type="button" class="btn btn-icon" id="week-next" aria-label="Minggu berikutnya"><i data-lucide="chevron-right"></i></button>
+            </div>
+          </div>
+          <div class="progress"><div id="plan-progress"></div></div>
+
+          <div class="week-grid" id="week-grid"></div>
+
+          <div class="mobile-planner">
+            <div class="day-tabs" id="day-tabs"></div>
+            <div class="stack" id="day-slots"></div>
+          </div>
+
+          <div class="sticky-action">
+            <button type="button" class="btn btn-primary btn-lg raised" id="make-shopping-list"><i data-lucide="shopping-basket"></i>Buat Daftar Belanja</button>
+          </div>
+        </section>
+
+        <!-- ---------- DAFTAR BELANJA ---------- -->
+        <section class="page" data-page="belanja">
+          <div class="shop-layout">
+            <div>
+              <h1 class="title">Daftar Belanja</h1>
+              <p class="muted">Dibuat otomatis dari menu minggu ini · bahan yang sama sudah digabung</p>
+
+              <form id="shop-add" class="inline-form">
+                <input name="extra" placeholder="Tambah barang lain, mis. minyak goreng" />
+                <button type="submit" class="btn btn-primary"><i data-lucide="plus"></i><span class="hide-mobile">Tambah</span></button>
+              </form>
+
+              <div id="shop-groups" class="stack-lg"></div>
+
+              <div class="empty" id="shop-empty" hidden>
+                <i data-lucide="shopping-basket" class="big-icon"></i>
+                <p class="heading">Daftar belanja masih kosong</p>
+                <p class="muted">Isi menu mingguan dulu, nanti bahan-bahannya muncul di sini.</p>
+                <button type="button" class="btn btn-primary" data-go="menu">Susun Menu</button>
+              </div>
+            </div>
+
+            <aside class="side-sticky">
+              <div class="shop-summary">
+                <p class="summary-label">Progres belanja</p>
+                <p class="summary-big"><span id="shop-done">0</span><small>/<span id="shop-total">0</span></small></p>
+                <div class="progress light"><div id="shop-progress"></div></div>
+                <div class="summary-cost">
+                  <p>Perkiraan biaya</p>
+                  <p class="summary-price" id="shop-cost">Rp 0</p>
+                </div>
+              </div>
+              <div class="three-buttons">
+                <button type="button" class="btn btn-secondary stacked" onclick="window.print()"><i data-lucide="printer"></i>Cetak</button>
+                <button type="button" class="btn btn-secondary stacked" id="shop-share"><i data-lucide="share-2"></i>Bagikan</button>
+                <button type="button" class="btn btn-secondary stacked" id="shop-reset"><i data-lucide="rotate-ccw"></i>Reset</button>
+              </div>
+            </aside>
+          </div>
+        </section>
+
+        <!-- ---------- KELUARGA ---------- -->
+        <section class="page" data-page="keluarga">
+          <div class="family-layout">
+            <div class="stack-lg">
+              <header class="family-hero">
+                <p class="hero-label">Grup keluarga</p>
+                <h1 class="title" id="family-name"></h1>
+                <div class="hero-row">
+                  <span class="family-code" id="family-code"></span>
+                  <button type="button" class="btn btn-secondary no-border" id="copy-code"><i data-lucide="copy"></i>Salin kode</button>
+                </div>
+              </header>
+
+              <section>
+                <div class="section-head">
+                  <h2 class="heading-lg" id="member-count">Anggota</h2>
+                  <button type="button" class="btn btn-primary" id="invite-open"><i data-lucide="user-plus"></i>Undang</button>
+                </div>
+                <ul class="list-card" id="member-list"></ul>
+              </section>
+            </div>
+
+            <section>
+              <h2 class="heading">Aktivitas Terbaru</h2>
+              <ol class="timeline" id="activity-list"></ol>
+              <p class="muted" id="activity-empty" hidden>Belum ada aktivitas.</p>
+            </section>
+          </div>
+        </section>
+
+        <!-- ---------- PROFIL ---------- -->
+        <section class="page narrow-2xl" data-page="profil">
+          <h1 class="title">Profil &amp; Pengaturan</h1>
+
+          <section class="panel profile-card">
+            <span class="avatar avatar-lg" id="profile-avatar"></span>
+            <div>
+              <p class="heading" id="profile-name"></p>
+              <p class="muted" id="profile-email"></p>
+            </div>
+          </section>
+
+          <form class="panel form-card" id="profile-form">
+            <h2 class="heading with-icon"><i data-lucide="user-round" class="primary"></i>Edit Profil</h2>
+            <div class="two-cols">
+              <label class="field"><span>Nama</span><input name="name" /></label>
+              <label class="field"><span>Email</span><input name="email" type="email" /></label>
+            </div>
+            <div><button type="submit" class="btn btn-primary">Simpan Perubahan</button></div>
+          </form>
+
+          <form class="panel form-card" id="password-form">
+            <h2 class="heading with-icon"><i data-lucide="key-round" class="primary"></i>Ganti Password</h2>
+            <div class="two-cols">
+              <label class="field"><span>Password lama</span><input name="old" type="password" /></label>
+              <label class="field"><span>Password baru</span><input name="new" type="password" /></label>
+            </div>
+            <div><button type="submit" class="btn btn-secondary">Ganti Password</button></div>
+          </form>
+
+          <section class="panel settings">
+            <label class="setting-row">
+              <i data-lucide="moon"></i><span>Mode gelap</span>
+              <button type="button" class="switch" id="dark-switch" role="switch" aria-checked="false"><span></span></button>
+            </label>
+            <button type="button" class="setting-row danger" id="logout"><i data-lucide="log-out"></i>Keluar</button>
+          </section>
+        </section>
+      </main>
+
+      <!-- Menu bawah (ponsel) -->
+      <nav class="bottom-nav">
+        <button type="button" data-go="beranda"><i data-lucide="house"></i>Beranda</button>
+        <button type="button" data-go="resep"><i data-lucide="book-open"></i>Resep</button>
+        <button type="button" data-go="menu"><i data-lucide="calendar-days"></i>Menu</button>
+        <button type="button" data-go="belanja"><i data-lucide="shopping-basket"></i>Belanja</button>
+        <button type="button" data-go="profil"><i data-lucide="user-round"></i>Profil</button>
+      </nav>
+    </div>
+
+    <!-- Notifikasi singkat -->
+    <div id="toast" class="toast" role="status" hidden></div>
+
+    <!-- =========================================================
+         JENDELA DIALOG
+         ========================================================= -->
+    <dialog class="modal" id="modal-add-menu">
+      <div class="modal-box">
+        <div class="modal-head"><h2 class="heading">Tambah ke Menu</h2><button type="button" class="btn btn-icon" data-close aria-label="Tutup"><i data-lucide="x"></i></button></div>
+        <div class="modal-body">
+          <p class="label">Hari</p>
+          <div class="chip-wrap" id="add-menu-days"></div>
+          <p class="label">Waktu makan</p>
+          <div class="chip-wrap" id="add-menu-slots"></div>
+          <button type="button" class="btn btn-primary btn-block" id="add-menu-save">Simpan ke Menu</button>
+        </div>
+      </div>
+    </dialog>
+
+    <dialog class="modal" id="modal-timer">
+      <div class="modal-box">
+        <div class="modal-head"><h2 class="heading">Timer Memasak</h2><button type="button" class="btn btn-icon" data-close aria-label="Tutup"><i data-lucide="x"></i></button></div>
+        <div class="modal-body">
+          <p class="timer-display" id="timer-display">00:00</p>
+          <div class="center-row">
+            <button type="button" class="btn btn-secondary" id="timer-minus">−5 mnt</button>
+            <button type="button" class="btn btn-primary timer-run" id="timer-run">Mulai</button>
+            <button type="button" class="btn btn-secondary" id="timer-plus">+5 mnt</button>
+          </div>
+        </div>
+      </div>
+    </dialog>
+
+    <dialog class="modal" id="modal-delete">
+      <div class="modal-box">
+        <div class="modal-head"><h2 class="heading">Hapus resep?</h2><button type="button" class="btn btn-icon" data-close aria-label="Tutup"><i data-lucide="x"></i></button></div>
+        <div class="modal-body">
+          <p class="muted"><span id="delete-name"></span> akan dihapus dari buku resep keluarga. Tindakan ini tidak bisa dibatalkan.</p>
+          <div class="end-row">
+            <button type="button" class="btn btn-secondary" data-close>Batal</button>
+            <button type="button" class="btn btn-primary btn-danger" id="delete-confirm">Ya, hapus</button>
+          </div>
+        </div>
+      </div>
+    </dialog>
+
+    <dialog class="modal" id="modal-pick">
+      <div class="modal-box">
+        <div class="modal-head"><h2 class="heading" id="pick-title">Pilih resep</h2><button type="button" class="btn btn-icon" data-close aria-label="Tutup"><i data-lucide="x"></i></button></div>
+        <div class="modal-body">
+          <div class="search-box"><i data-lucide="search"></i><input id="pick-search" placeholder="Cari resep…" /></div>
+          <ul class="pick-list" id="pick-list"></ul>
+        </div>
+      </div>
+    </dialog>
+
+    <dialog class="modal" id="modal-invite">
+      <div class="modal-box">
+        <div class="modal-head"><h2 class="heading">Undang Anggota</h2><button type="button" class="btn btn-icon" data-close aria-label="Tutup"><i data-lucide="x"></i></button></div>
+        <form class="modal-body" id="invite-form">
+          <label class="field"><span>Nama anggota</span><input name="name" placeholder="mis. Budi Santoso" /></label>
+          <label class="field"><span>Email atau nomor WhatsApp</span><input name="contact" placeholder="mis. 0812 3456 7890" /></label>
+          <p class="small muted">Atau bagikan kode <strong class="ink" id="invite-code"></strong> agar mereka bisa bergabung saat mendaftar.</p>
+          <button type="submit" class="btn btn-primary btn-block">Kirim Undangan</button>
+        </form>
+      </div>
+    </dialog>
+
+    <!-- =========================================================
+         CETAKAN (template) — potongan HTML yang diulang oleh skrip
+         ========================================================= -->
+    <template id="tpl-recipe-card">
+      <article class="recipe-card">
+        <div class="recipe-photo">
+          <img loading="lazy" alt="" />
+          <button type="button" class="fav-btn" aria-label="Favorit"><i data-lucide="heart"></i></button>
+          <span class="heirloom-badge" hidden>Resep Warisan</span>
+        </div>
+        <div class="recipe-body">
+          <span class="tag"></span>
+          <h3 class="recipe-title"></h3>
+          <div class="recipe-meta">
+            <span><i data-lucide="clock"></i><span class="time"></span></span>
+            <span><i data-lucide="users"></i><span class="serves"></span> porsi</span>
+          </div>
+        </div>
+      </article>
+    </template>
+
+    <template id="tpl-skeleton">
+      <div class="recipe-card skeleton"><div class="recipe-photo"></div><div class="recipe-body"><div class="bar short"></div><div class="bar"></div></div></div>
+    </template>
+
+    <template id="tpl-today">
+      <button type="button" class="today-item">
+        <img alt="" />
+        <span class="today-empty"><i data-lucide="plus"></i></span>
+        <span>
+          <span class="slot-label"><i></i><span class="slot-name"></span></span>
+          <span class="today-title"></span>
+        </span>
+      </button>
+    </template>
+
+    <template id="tpl-check-item">
+      <li>
+        <button type="button" class="check-item">
+          <span class="checkbox"><i data-lucide="check"></i></span>
+          <span class="check-text"><span class="check-name"></span><span class="check-sub"></span></span>
+          <span class="check-qty"><strong class="qty"></strong> <span class="unit"></span></span>
+        </button>
+      </li>
+    </template>
+
+    <template id="tpl-ingredient-row">
+      <div class="ingredient-row">
+        <input class="ing-name" aria-label="Nama bahan" placeholder="Nama bahan" />
+        <input class="ing-qty" aria-label="Jumlah" type="number" min="0" step="any" value="1" />
+        <select class="ing-unit" aria-label="Satuan"></select>
+        <select class="ing-cat" aria-label="Jenis bahan"><option>Bumbu</option><option>Sayur</option><option>Daging</option><option>Lainnya</option></select>
+        <button type="button" class="btn btn-icon remove" aria-label="Hapus bahan"><i data-lucide="trash-2"></i></button>
+      </div>
+    </template>
+
+    <template id="tpl-step-row">
+      <div class="step-row" draggable="true">
+        <span class="grip" aria-label="Seret untuk mengurutkan"><i data-lucide="grip-vertical"></i></span>
+        <span class="step-num"></span>
+        <textarea rows="2" placeholder="Tulis langkahnya…"></textarea>
+        <button type="button" class="btn btn-icon remove" aria-label="Hapus langkah"><i data-lucide="trash-2"></i></button>
+      </div>
+    </template>
+
+    <template id="tpl-slot">
+      <div class="slot">
+        <button type="button" class="slot-empty"><i data-lucide="plus"></i>Pilih resep</button>
+        <div class="slot-filled">
+          <button type="button" class="slot-pick"><img alt="" /><span class="slot-title"></span></button>
+          <button type="button" class="slot-clear" aria-label="Kosongkan"><i data-lucide="x"></i></button>
+        </div>
+      </div>
+    </template>
+
+    <template id="tpl-member">
+      <li class="member">
+        <span class="avatar"></span>
+        <div class="member-text"><p class="member-name"></p><p class="small muted member-sub"></p></div>
+        <span class="role"></span>
+      </li>
+    </template>
+
+    <template id="tpl-pick-item">
+      <li><button type="button" class="pick-item"><img alt="" /><span><strong class="pick-name"></strong><small class="muted pick-sub"></small></span></button></li>
+    </template>
+
+    <script src="/js/vendor/lucide.min.js"></script>
+
+    <script>
+      /* =========================================================
+         1. DATA CONTOH
+         Hanya dipakai saat aplikasi pertama kali dibuka dan belum ada
+         data tersimpan. Boleh dihapus seluruh blok ini (sampai garis
+         "AKHIR DATA CONTOH") — aplikasi tetap berjalan dengan data kosong.
+         ========================================================= */
+      var SAMPLE_DATA = {
+        family: { name: 'Keluarga Santoso', code: 'SNTS-2024' },
+        members: [
+          { name: 'Nenek Ratna', email: 'ratna@keluarga.id', role: 'Anggota' },
+        ],
+        recipes: [
+          {
+            id: 'rendang', title: 'Rendang Daging Padang', cat: 'Hari Raya', time: 240, servings: 6, difficulty: 'Sulit',
+            origin: 'Nenek Ratna', fav: true,
+            img: 'https://images.unsplash.com/photo-1677921755291-c39158477b8e?w=800&h=600&fit=crop&auto=format',
+            desc: 'Rendang kering yang dimasak perlahan sampai bumbunya meresap dan berwarna cokelat gelap.',
+            story: 'Nenek selalu memasak rendang ini dua hari sebelum Lebaran. Kuncinya sabar — jangan berhenti mengaduk.',
+            ingredients: [
+              { name: 'Daging sapi', qty: 1000, unit: 'gram', cat: 'Daging' },
+              { name: 'Santan kental', qty: 1000, unit: 'ml', cat: 'Lainnya' },
+              { name: 'Bawang merah', qty: 12, unit: 'siung', cat: 'Bumbu' },
+              { name: 'Cabai merah', qty: 15, unit: 'buah', cat: 'Sayur' },
+            ],
+            steps: [
+              'Haluskan bawang merah, bawang putih, cabai, jahe, dan lengkuas.',
+              'Masukkan santan dan bumbu halus ke dalam wajan besar, aduk di atas api sedang.',
+              'Tambahkan daging, lalu masak sambil terus diaduk hingga santan mengental dan rendang kering.',
+            ],
+          },
+          {
+            id: 'nasgor', title: 'Nasi Goreng Kampung', cat: 'Sarapan', time: 20, servings: 2, difficulty: 'Mudah',
+            origin: 'Ayah Budi', fav: false,
+            img: 'https://images.unsplash.com/photo-1680674774705-90b4904b3a7f?w=800&h=600&fit=crop&auto=format',
+            desc: 'Nasi goreng terasi dengan telur ceplok dan kerupuk.',
+            story: 'Menu andalan Ayah setiap Sabtu pagi — pakai nasi sisa semalam supaya tidak lembek.',
+            ingredients: [
+              { name: 'Nasi putih', qty: 2, unit: 'piring', cat: 'Lainnya' },
+              { name: 'Bawang merah', qty: 4, unit: 'siung', cat: 'Bumbu' },
+              { name: 'Telur', qty: 2, unit: 'butir', cat: 'Lainnya' },
+            ],
+            steps: ['Ulek bawang, cabai, dan terasi.', 'Tumis bumbu, masukkan nasi dan kecap manis.', 'Sajikan dengan telur ceplok dan kerupuk.'],
+          },
+        ],
+        plan: { 'Senin-Sarapan': 'nasgor', 'Rabu-Makan Malam': 'rendang' },
+        activity: [],
+      }
+      /* ---------------- AKHIR DATA CONTOH ---------------- */
+
+
+      /* =========================================================
+         2. PENGATURAN TETAP
+         ========================================================= */
+      var DAYS = ['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu', 'Minggu']
+      var SLOTS = ['Sarapan', 'Makan Siang', 'Makan Malam']
+      var SLOT_ICONS = ['coffee', 'sun', 'moon']
+      var CATEGORIES = ['Semua', 'Sarapan', 'Makan Siang', 'Makan Malam', 'Camilan', 'Minuman', 'Hari Raya']
+      var UNITS = ['gram', 'kg', 'ml', 'liter', 'buah', 'siung', 'sdm', 'sdt', 'butir', 'batang', 'lembar', 'ikat', 'ekor', 'piring', 'cm', 'potong']
+      var SHOP_GROUPS = ['Sayur', 'Daging', 'Bumbu', 'Lainnya', 'Tambahan']
+      var PRICE_PER_ITEM = { Daging: 45000, Sayur: 8000, Bumbu: 3000, Lainnya: 12000, Tambahan: 5000 }
+      var AVATAR_COLORS = ['#D9531E', '#6B8E4E', '#B8430F', '#A07A1F', '#5A6F8E']
+
+
+      /* =========================================================
+         3. PENYIMPANAN DATA
+         Semua baca/tulis data lewat objek "store" ini. Saat ini datanya
+         disimpan di browser (localStorage). Untuk memakai database,
+         cukup ganti isi fungsi-fungsi di bawah dengan panggilan fetch()
+         ke server — lihat DATABASE.md.
+         ========================================================= */
+      var STORAGE_KEY = 'dapur-warisan-data'
+
+      var store = {
+        data: null,
+
+        load: async function () {
+          var saved = localStorage.getItem(STORAGE_KEY)
+          if (saved) {
+            store.data = JSON.parse(saved)
+          } else if (typeof SAMPLE_DATA !== 'undefined') {
+            store.data = JSON.parse(JSON.stringify(SAMPLE_DATA))
+          } else {
+            store.data = { family: { name: 'Keluarga Saya', code: makeCode() }, members: [], recipes: [], plan: {}, activity: [] }
+          }
+          return store.data
+        },
+
+        persist: function () {
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(store.data))
+        },
+
+        saveRecipe: async function (recipe) {
+          var list = store.data.recipes
+          var index = list.findIndex(function (r) { return r.id === recipe.id })
+          if (index >= 0) list[index] = recipe
+          else list.push(recipe)
+          store.persist()
+          return recipe
+        },
+
+        deleteRecipe: async function (id) {
+          store.data.recipes = store.data.recipes.filter(function (r) { return r.id !== id })
+          Object.keys(store.data.plan).forEach(function (key) {
+            if (store.data.plan[key] === id) delete store.data.plan[key]
+          })
+          store.persist()
+        },
+
+        setPlanSlot: async function (key, recipeId) {
+          if (recipeId) store.data.plan[key] = recipeId
+          else delete store.data.plan[key]
+          store.persist()
+        },
+
+        saveMember: async function (member) {
+          var list = store.data.members
+          var index = list.findIndex(function (m) { return m.email === member.email })
+          if (index >= 0) list[index] = member
+          else list.push(member)
+          store.persist()
+        },
+
+        addActivity: async function (who, what, object) {
+          store.data.activity.unshift({ who: who, what: what, obj: object, at: new Date().toISOString() })
+          store.data.activity = store.data.activity.slice(0, 20)
+          store.persist()
+        },
+      }
+
+      function makeCode() {
+        return 'KLG-' + Math.floor(1000 + Math.random() * 9000)
+      }
+
+
+      /* =========================================================
+         4. ALAT BANTU
+         ========================================================= */
+      function $(selector, root) { return (root || document).querySelector(selector) }
+      function $all(selector, root) { return Array.from((root || document).querySelectorAll(selector)) }
+      function fromTemplate(id) { return document.getElementById(id).content.firstElementChild.cloneNode(true) }
+      function refreshIcons() { if (window.lucide) lucide.createIcons() }
+
+      function formatTime(minutes) {
+        if (minutes < 60) return minutes + ' mnt'
+        var rest = minutes % 60
+        return Math.floor(minutes / 60) + ' jam' + (rest ? ' ' + rest + ' mnt' : '')
+      }
+      function formatQty(n) {
+        if (Number.isInteger(n)) return String(n)
+        return n.toFixed(n < 10 ? 1 : 0).replace('.', ',')
+      }
+      function initials(name) {
+        return name.split(' ').filter(Boolean).slice(0, 2).map(function (w) { return w[0].toUpperCase() }).join('') || '?'
+      }
+      function colorFor(name) {
+        var sum = 0
+        for (var i = 0; i < name.length; i++) sum += name.charCodeAt(i)
+        return AVATAR_COLORS[sum % AVATAR_COLORS.length]
+      }
+      function paintAvatar(el, name) {
+        el.textContent = initials(name)
+        el.style.background = colorFor(name)
+      }
+      function timeAgo(iso) {
+        var minutes = Math.round((Date.now() - new Date(iso)) / 60000)
+        if (minutes < 1) return 'Baru saja'
+        if (minutes < 60) return minutes + ' menit lalu'
+        var hours = Math.round(minutes / 60)
+        if (hours < 24) return hours + ' jam lalu'
+        var days = Math.round(hours / 24)
+        return days === 1 ? 'Kemarin' : days + ' hari lalu'
+      }
+      function todayName() { return DAYS[(new Date().getDay() + 6) % 7] }
+      function findRecipe(id) { return store.data.recipes.find(function (r) { return r.id === id }) }
+
+      var toastTimer = null
+      function toast(message, isError) {
+        var el = $('#toast')
+        el.innerHTML = '<i data-lucide="' + (isError ? 'circle-x' : 'circle-check') + '"></i>'
+        el.append(message)
+        el.classList.toggle('is-error', !!isError)
+        el.hidden = false
+        el.classList.remove('rise'); void el.offsetWidth; el.classList.add('rise')
+        refreshIcons()
+        clearTimeout(toastTimer)
+        toastTimer = setTimeout(function () { el.hidden = true }, 2800)
+      }
+
+      function showErrors(form, errors) {
+        $all('[data-error]', form).forEach(function (el) {
+          el.textContent = errors[el.dataset.error] || ''
+        })
+      }
+
+      /* Dialog: tutup lewat tombol [data-close] atau klik di luar kotak */
+      $all('dialog.modal').forEach(function (dialog) {
+        dialog.addEventListener('click', function (e) {
+          if (e.target === dialog || e.target.closest('[data-close]')) dialog.close()
+        })
+      })
+
+
+      /* =========================================================
+         5. MASUK & NAVIGASI
+         ========================================================= */
+      var currentUser = null
+      var currentPage = 'beranda'
+      var authMode = 'masuk'
+
+      $all('[data-tab]').forEach(function (tab) {
+        tab.addEventListener('click', function () { setAuthMode(tab.dataset.tab) })
+      })
+
+      function setAuthMode(mode) {
+        authMode = mode
+        var isLogin = mode === 'masuk'
+        $all('[data-tab]').forEach(function (t) { t.classList.toggle('is-active', t.dataset.tab === mode) })
+        $all('.only-register').forEach(function (el) { el.hidden = isLogin })
+        $all('.only-login').forEach(function (el) { el.hidden = !isLogin })
+        $('#auth-title').textContent = isLogin ? 'Selamat datang kembali' : 'Buat akun keluarga'
+        $('#auth-subtitle').textContent = isLogin ? 'Masuk untuk melihat resep dan menu keluarga.' : 'Gabung dengan keluarga lewat kode, atau buat grup baru.'
+        $('#auth-submit').textContent = isLogin ? 'Masuk' : 'Daftar'
+        showErrors($('#auth-form'), {})
+      }
+
+      $('#toggle-password').addEventListener('click', function () {
+        var input = $('#auth-form [name=password]')
+        var show = input.type === 'password'
+        input.type = show ? 'text' : 'password'
+        this.innerHTML = '<i data-lucide="' + (show ? 'eye-off' : 'eye') + '"></i>'
+        refreshIcons()
+      })
+
+      $('#auth-form').addEventListener('submit', async function (e) {
+        e.preventDefault()
+        var form = e.target
+        var name = form.nama.value.trim()
+        var email = form.email.value.trim()
+        var errors = {}
+        if (authMode === 'daftar' && !name) errors.nama = 'Nama wajib diisi'
+        if (!/\S+@\S+\.\S+/.test(email)) errors.email = 'Format email belum benar'
+        if (form.password.value.length < 6) errors.password = 'Password minimal 6 karakter'
+        showErrors(form, errors)
+        if (Object.keys(errors).length) return
+
+        var member = store.data.members.find(function (m) { return m.email === email })
+        if (!member) {
+          member = { name: name || email.split('@')[0], email: email, role: store.data.members.some(function (m) { return m.role === 'Admin' }) ? 'Anggota' : 'Admin' }
+          await store.saveMember(member)
+          await store.addActivity(member.name, 'bergabung ke', store.data.family.name)
+        } else if (name) {
+          member.name = name
+          await store.saveMember(member)
+        }
+        currentUser = member
+        form.reset()
+        $('#auth').hidden = true
+        $('#app').hidden = false
+        go('beranda')
+      })
+
+      $('#logout').addEventListener('click', function () {
+        currentUser = null
+        $('#app').hidden = true
+        $('#auth').hidden = false
+        setAuthMode('masuk')
+      })
+
+      /* Semua tombol dengan data-go="halaman" berpindah halaman */
+      document.addEventListener('click', function (e) {
+        var link = e.target.closest('[data-go]')
+        if (link) go(link.dataset.go)
+      })
+
+      var pageRenderers = {}
+
+      function go(page, recipeId) {
+        currentPage = page
+        $all('.page').forEach(function (p) {
+          var active = p.dataset.page === page
+          p.hidden = !active
+          p.classList.remove('rise')
+          if (active) { void p.offsetWidth; p.classList.add('rise') }
+        })
+        var navId = page === 'detail' || page === 'form' ? 'resep' : page
+        $all('.nav-link, .bottom-nav button').forEach(function (b) {
+          b.classList.toggle('is-active', b.dataset.go === navId)
+        })
+        renderChrome()
+        pageRenderers[page](recipeId)
+        refreshIcons()
+        window.scrollTo({ top: 0 })
+      }
+
+      function renderChrome() {
+        paintAvatar($('#top-avatar'), currentUser.name)
+        $('.family-name').textContent = store.data.family.name
+        var group = $('.avatar-group')
+        group.innerHTML = ''
+        var members = store.data.members
+        members.slice(0, 4).forEach(function (m) {
+          var a = document.createElement('span')
+          a.className = 'avatar avatar-sm'
+          paintAvatar(a, m.name)
+          group.append(a)
+        })
+        if (members.length > 4) {
+          var more = document.createElement('span')
+          more.className = 'avatar avatar-sm avatar-more'
+          more.textContent = '+' + (members.length - 4)
+          group.append(more)
+        }
+      }
+
+
+      /* =========================================================
+         6. KARTU RESEP & FAVORIT
+         ========================================================= */
+      function recipeCard(recipe, compact) {
+        var card = fromTemplate('tpl-recipe-card')
+        if (compact) card.classList.add('compact')
+        var img = $('img', card)
+        img.src = recipe.img
+        img.alt = recipe.title
+        $('.tag', card).textContent = recipe.cat
+        $('.recipe-title', card).textContent = recipe.title
+        $('.time', card).textContent = formatTime(recipe.time)
+        $(".serves", card).textContent = recipe.servings
+        $('.heirloom-badge', card).hidden = !/^(nenek|kakek|mbah|eyang|oma|opa)/i.test(recipe.origin)
+        setupFavButton($('.fav-btn', card), recipe)
+        card.addEventListener('click', function () { go('detail', recipe.id) })
+        return card
+      }
+
+      function setupFavButton(button, recipe) {
+        button.dataset.recipe = recipe.id
+        paintFav(button, recipe.fav)
+        button.onclick = async function (e) {
+          e.stopPropagation()
+          recipe.fav = !recipe.fav
+          await store.saveRecipe(recipe)
+          if (recipe.fav) await store.addActivity(currentUser.name, 'memfavoritkan', recipe.title)
+          $all('.fav-btn[data-recipe="' + recipe.id + '"]').forEach(function (b) { paintFav(b, recipe.fav) })
+          button.classList.remove('pop'); void button.offsetWidth; button.classList.add('pop')
+          if (currentPage === 'beranda') renderFavorites()
+          if (currentPage === 'resep' && collection.sort === 'Favorit') renderCollectionList()
+        }
+      }
+
+      function paintFav(button, on) {
+        button.classList.toggle('is-on', on)
+        button.setAttribute('aria-pressed', on)
+        button.setAttribute('aria-label', on ? 'Hapus dari favorit' : 'Tambah ke favorit')
+      }
+
+
+      /* =========================================================
+         7. BERANDA
+         ========================================================= */
+      pageRenderers.beranda = function () {
+        var hour = new Date().getHours()
+        var greeting = hour < 11 ? 'Selamat pagi' : hour < 15 ? 'Selamat siang' : hour < 18 ? 'Selamat sore' : 'Selamat malam'
+        var today = todayName()
+        $('#home-greeting').textContent = greeting + ', ' + currentUser.name.split(' ')[0] + '!'
+        $('#home-date').textContent = today + ', ' + new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'long' })
+
+        var todayBox = $('#home-today')
+        todayBox.innerHTML = ''
+        SLOTS.forEach(function (slot, i) {
+          var recipe = findRecipe(store.data.plan[today + '-' + slot])
+          var item = fromTemplate('tpl-today')
+          $('.slot-label i', item).setAttribute('data-lucide', SLOT_ICONS[i])
+          $('.slot-name', item).textContent = slot
+          $('.today-title', item).textContent = recipe ? recipe.title : 'Belum dipilih'
+          if (recipe) { $('img', item).src = recipe.img; $('.today-empty', item).remove() }
+          else $('img', item).remove()
+          item.addEventListener('click', function () { recipe ? go('detail', recipe.id) : go('menu') })
+          todayBox.append(item)
+        })
+
+        var recent = $('#home-recent')
+        recent.innerHTML = ''
+        var latest = store.data.recipes.slice().reverse().slice(0, 6)
+        latest.forEach(function (r) { recent.append(recipeCard(r, true)) })
+        if (!latest.length) recent.innerHTML = '<p class="muted">Belum ada resep. <button type="button" class="link" data-go="form">Tambah resep pertama</button></p>'
+
+        var heirloom = store.data.recipes.find(function (r) { return r.story })
+        var box = $('#home-heirloom')
+        box.hidden = !heirloom
+        if (heirloom) {
+          $('img', box).src = heirloom.img
+          $('img', box).alt = heirloom.title
+          $('h2', box).textContent = heirloom.title
+          $('.heirloom-story', box).textContent = '“' + heirloom.story + '”'
+          $('.heirloom-origin', box).textContent = '— ' + heirloom.origin
+          $('button', box).onclick = function () { go('detail', heirloom.id) }
+        }
+        renderFavorites()
+      }
+
+      function renderFavorites() {
+        var favorites = store.data.recipes.filter(function (r) { return r.fav }).slice(0, 4)
+        var grid = $('#home-favorites')
+        grid.innerHTML = ''
+        favorites.forEach(function (r) { grid.append(recipeCard(r)) })
+        $('#home-favorites-section').hidden = !favorites.length
+        refreshIcons()
+      }
+
+
+      /* =========================================================
+         8. KOLEKSI RESEP
+         ========================================================= */
+      var collection = { search: '', category: 'Semua', sort: 'Terbaru', maxTime: 300, origin: 'Semua', loading: false }
+
+      pageRenderers.resep = function () {
+        var recipes = store.data.recipes
+        var cooks = new Set(recipes.map(function (r) { return r.origin }))
+        $('#collection-count').textContent = recipes.length + ' resep tersimpan dari ' + cooks.size + ' juru masak keluarga'
+
+        var origins = ['Semua'].concat(Array.from(cooks))
+        if (origins.indexOf(collection.origin) < 0) collection.origin = 'Semua'
+        $('#origin-filter').innerHTML = ''
+        origins.forEach(function (o) { $('#origin-filter').append(new Option(o, o, false, o === collection.origin)) })
+
+        var chips = $('#category-chips')
+        chips.innerHTML = ''
+        CATEGORIES.forEach(function (c) {
+          var chip = document.createElement('button')
+          chip.type = 'button'
+          chip.className = 'chip' + (c === collection.category ? ' is-active' : '')
+          chip.textContent = c
+          chip.onclick = function () {
+            collection.category = c
+            $all('.chip', chips).forEach(function (x) { x.classList.toggle('is-active', x === chip) })
+            renderCollectionList()
+          }
+          chips.append(chip)
+        })
+
+        collection.loading = true
+        renderCollectionList()
+        setTimeout(function () { collection.loading = false; if (currentPage === 'resep') renderCollectionList() }, 600)
+      }
+
+      function renderCollectionList() {
+        var list = $('#collection-list')
+        list.innerHTML = ''
+        if (collection.loading) {
+          for (var i = 0; i < 6; i++) list.append(fromTemplate('tpl-skeleton'))
+          $('#collection-empty').hidden = true
+          return
+        }
+        var query = collection.search.toLowerCase()
+        var results = store.data.recipes.filter(function (r) {
+          var matchesText = r.title.toLowerCase().includes(query) || r.ingredients.some(function (i) { return i.name.toLowerCase().includes(query) })
+          return matchesText &&
+            (collection.category === 'Semua' || r.cat === collection.category) &&
+            (collection.origin === 'Semua' || r.origin === collection.origin) &&
+            r.time <= collection.maxTime
+        })
+        if (collection.sort === 'Favorit') results.sort(function (a, b) { return b.fav - a.fav })
+        else if (collection.sort === 'Waktu masak') results.sort(function (a, b) { return a.time - b.time })
+        else results.reverse()
+
+        results.forEach(function (r) { list.append(recipeCard(r)) })
+        $('#collection-empty').hidden = results.length > 0
+        refreshIcons()
+      }
+
+      $('#collection-search').addEventListener('input', function (e) { collection.search = e.target.value; renderCollectionList() })
+      $('#collection-sort').addEventListener('change', function (e) { collection.sort = e.target.value; renderCollectionList() })
+      $('#origin-filter').addEventListener('change', function (e) { collection.origin = e.target.value; renderCollectionList() })
+      $('#max-time').addEventListener('input', function (e) {
+        collection.maxTime = Number(e.target.value)
+        $('#max-time-label').textContent = 'Waktu masak maks: ' + formatTime(collection.maxTime)
+        renderCollectionList()
+      })
+      $('#filter-toggle').addEventListener('click', function () {
+        var panel = $('#filters')
+        panel.hidden = !panel.hidden
+        this.classList.toggle('btn-primary', !panel.hidden)
+        this.classList.toggle('btn-secondary', panel.hidden)
+      })
+
+
+      /* =========================================================
+         9. DETAIL RESEP
+         ========================================================= */
+      var detail = { recipe: null, servings: 4, checked: new Set() }
+
+      pageRenderers.detail = function (id) {
+        var r = findRecipe(id)
+        if (!r) return go('resep')
+        detail = { recipe: r, servings: r.servings, checked: new Set() }
+
+        $('#detail-img').src = r.img.replace('w=800&h=600', 'w=1600&h=900')
+        $('#detail-img').alt = r.title
+        setupFavButton($('#detail-fav'), r)
+        $('#detail-cat').textContent = r.cat
+        $('#detail-title').textContent = r.title
+        $('#detail-desc').textContent = r.desc
+        $('#detail-time').textContent = formatTime(r.time)
+        $('#detail-servings').textContent = r.servings + ' orang'
+        $('#detail-difficulty').textContent = r.difficulty
+        $('#detail-origin').textContent = r.origin
+        $('#detail-story').textContent = r.story ? '“' + r.story + '”' : ''
+        $('#detail-story-box').hidden = !r.story && !r.origin
+
+        var steps = $('#detail-steps')
+        steps.innerHTML = ''
+        r.steps.forEach(function (text, i) {
+          var li = document.createElement('li')
+          li.innerHTML = '<span class="step-num solid"></span><p></p>'
+          $('.step-num', li).textContent = i + 1
+          $('p', li).textContent = text
+          steps.append(li)
+        })
+        renderIngredients()
+      }
+
+      function renderIngredients() {
+        var r = detail.recipe
+        if (!r) return
+        var factor = detail.servings / r.servings
+        $('#servings-value').textContent = detail.servings + ' porsi'
+        var list = $('#detail-ingredients')
+        list.innerHTML = ''
+        r.ingredients.forEach(function (ing, i) {
+          var item = fromTemplate('tpl-check-item')
+          var button = $('button', item)
+          button.classList.toggle('is-checked', detail.checked.has(i))
+          $('.check-name', item).textContent = ing.name
+          $('.check-sub', item).remove()
+          $('.qty', item).textContent = formatQty(ing.qty * factor)
+          $('.unit', item).textContent = ing.unit
+          button.onclick = function () {
+            detail.checked.has(i) ? detail.checked.delete(i) : detail.checked.add(i)
+            button.classList.toggle('is-checked')
+          }
+          list.append(item)
+        })
+        refreshIcons()
+      }
+
+      $('#servings-minus').addEventListener('click', function () { detail.servings = Math.max(1, detail.servings - 1); renderIngredients() })
+      $('#servings-plus').addEventListener('click', function () { detail.servings += 1; renderIngredients() })
+      $('#detail-edit').addEventListener('click', function () { if (detail.recipe) go('form', detail.recipe.id) })
+
+      /* Hapus resep */
+      $('#detail-delete').addEventListener('click', function () {
+        if (!detail.recipe) return
+        $('#delete-name').textContent = '“' + detail.recipe.title + '”'
+        $('#modal-delete').showModal()
+      })
+      $('#delete-confirm').addEventListener('click', async function () {
+        await store.deleteRecipe(detail.recipe.id)
+        $('#modal-delete').close()
+        toast('Resep dihapus')
+        go('resep')
+      })
+
+      /* Tambah ke menu */
+      var addMenuChoice = { day: DAYS[0], slot: SLOTS[1] }
+      function chipGroup(container, options, selected, onPick) {
+        container.innerHTML = ''
+        options.forEach(function (option) {
+          var chip = document.createElement('button')
+          chip.type = 'button'
+          chip.className = 'chip' + (option === selected ? ' is-active' : '')
+          chip.textContent = option
+          chip.onclick = function () {
+            $all('.chip', container).forEach(function (c) { c.classList.toggle('is-active', c === chip) })
+            onPick(option)
+          }
+          container.append(chip)
+        })
+      }
+      $('#detail-add-menu').addEventListener('click', function () {
+        if (!detail.recipe) return
+        addMenuChoice = { day: DAYS[0], slot: SLOTS.includes(detail.recipe.cat) ? detail.recipe.cat : SLOTS[1] }
+        chipGroup($('#add-menu-days'), DAYS, addMenuChoice.day, function (d) { addMenuChoice.day = d })
+        chipGroup($('#add-menu-slots'), SLOTS, addMenuChoice.slot, function (s) { addMenuChoice.slot = s })
+        $('#modal-add-menu').showModal()
+      })
+      $('#add-menu-save').addEventListener('click', async function () {
+        var c = addMenuChoice
+        await store.setPlanSlot(c.day + '-' + c.slot, detail.recipe.id)
+        await store.addActivity(currentUser.name, 'mengisi menu', c.day + ' · ' + c.slot)
+        $('#modal-add-menu').close()
+        toast(detail.recipe.title + ' ditambahkan ke ' + c.slot + ' hari ' + c.day)
+      })
+
+      /* Timer memasak */
+      var timer = { left: 0, running: false, interval: null }
+      function paintTimer() {
+        var mm = String(Math.floor(timer.left / 60)).padStart(2, '0')
+        var ss = String(timer.left % 60).padStart(2, '0')
+        $('#timer-display').textContent = mm + ':' + ss
+        $('#timer-run').textContent = timer.running ? 'Jeda' : 'Mulai'
+      }
+      function stopTimer() { clearInterval(timer.interval); timer.interval = null }
+      function startTimer() {
+        stopTimer()
+        timer.interval = setInterval(function () {
+          timer.left = Math.max(0, timer.left - 1)
+          paintTimer()
+          if (timer.left === 0) {
+            stopTimer()
+            timer.running = false
+            paintTimer()
+            toast('Waktu memasak selesai!')
+          }
+        }, 1000)
+      }
+      $('#detail-timer').addEventListener('click', function () {
+        if (!detail.recipe) return
+        timer.left = Math.min(detail.recipe.time, 60) * 60
+        timer.running = false
+        paintTimer()
+        $('#modal-timer').showModal()
+      })
+      $('#timer-run').addEventListener('click', function () {
+        if (timer.left === 0) return
+        timer.running = !timer.running
+        timer.running ? startTimer() : stopTimer()
+        paintTimer()
+      })
+      $('#timer-minus').addEventListener('click', function () { timer.left = Math.max(60, timer.left - 300); paintTimer() })
+      $('#timer-plus').addEventListener('click', function () { timer.left += 300; paintTimer() })
+      $('#modal-timer').addEventListener('close', function () { stopTimer(); timer.running = false })
+
+
+      /* =========================================================
+         10. FORM TAMBAH / EDIT RESEP
+         ========================================================= */
+      var editingId = null
+      var formPhoto = ''
+      var recipeForm = $('#recipe-form')
+
+      CATEGORIES.slice(1).forEach(function (c) { $('#form-category').append(new Option(c, c)) })
+
+      pageRenderers.form = function (id) {
+        var r = findRecipe(id)
+        editingId = r ? r.id : null
+        $('#form-title').textContent = r ? 'Edit Resep' : 'Tambah Resep Baru'
+        recipeForm.reset()
+        showErrors(recipeForm, {})
+        $('#ingredients-card').classList.remove('has-error')
+        $('#steps-card').classList.remove('has-error')
+
+        recipeForm.elements.title.value = r ? r.title : ''
+        recipeForm.desc.value = r ? r.desc : ''
+        recipeForm.cat.value = r ? r.cat : 'Makan Malam'
+        recipeForm.difficulty.value = r ? r.difficulty : 'Mudah'
+        recipeForm.time.value = r ? r.time : 30
+        recipeForm.servings.value = r ? r.servings : 4
+        recipeForm.origin.value = r ? r.origin : ''
+        recipeForm.story.value = r ? r.story : ''
+        setPhoto(r ? r.img : '')
+
+        $('#ingredient-rows').innerHTML = ''
+        ;(r ? r.ingredients : [{ name: '', qty: 1, unit: 'gram', cat: 'Bumbu' }]).forEach(addIngredientRow)
+        $('#step-rows').innerHTML = ''
+        ;(r ? r.steps : ['']).forEach(addStepRow)
+      }
+
+      function leaveForm() { editingId ? go('detail', editingId) : go('resep') }
+      $('#form-back').addEventListener('click', leaveForm)
+      $('#form-cancel').addEventListener('click', leaveForm)
+
+      /* Foto: klik atau seret-lepas. Disimpan sebagai data URL. */
+      function setPhoto(src) {
+        formPhoto = src
+        $('#dropzone-img').src = src
+        $('#dropzone-img').hidden = !src
+        $('#dropzone-text').hidden = !!src
+      }
+      function readPhoto(file) {
+        if (!file || !file.type.startsWith('image/')) return
+        var reader = new FileReader()
+        reader.onload = function () { setPhoto(reader.result) }
+        reader.readAsDataURL(file)
+      }
+      var dropzone = $('#dropzone')
+      dropzone.addEventListener('click', function () { $('#photo-input').click() })
+      $('#photo-input').addEventListener('click', function (e) { e.stopPropagation() })
+      $('#photo-input').addEventListener('change', function (e) { readPhoto(e.target.files[0]); e.target.value = '' })
+      dropzone.addEventListener('dragover', function (e) { e.preventDefault(); dropzone.classList.add('is-dragging') })
+      dropzone.addEventListener('dragleave', function () { dropzone.classList.remove('is-dragging') })
+      dropzone.addEventListener('drop', function (e) {
+        e.preventDefault()
+        dropzone.classList.remove('is-dragging')
+        readPhoto(e.dataTransfer.files[0])
+      })
+
+      /* Waktu & porsi */
+      $all('.stepper').forEach(function (stepper) {
+        var output = $('output', stepper)
+        var step = Number(stepper.dataset.step)
+        $all('button', stepper).forEach(function (b) {
+          b.addEventListener('click', function () {
+            var next = Number(output.value) + step * Number(b.dataset.dir)
+            output.value = Math.max(step, next)
+          })
+        })
+      })
+
+      /* Baris bahan */
+      function addIngredientRow(ing) {
+        var row = fromTemplate('tpl-ingredient-row')
+        UNITS.forEach(function (u) { $('.ing-unit', row).append(new Option(u, u)) })
+        if (UNITS.indexOf(ing.unit) < 0) $('.ing-unit', row).append(new Option(ing.unit, ing.unit))
+        $('.ing-name', row).value = ing.name
+        $('.ing-qty', row).value = ing.qty
+        $('.ing-unit', row).value = ing.unit
+        $('.ing-cat', row).value = ing.cat || 'Lainnya'
+        $('.remove', row).onclick = function () { row.remove() }
+        $('#ingredient-rows').append(row)
+        refreshIcons()
+      }
+      $('#add-ingredient').addEventListener('click', function () { addIngredientRow({ name: '', qty: 1, unit: 'gram', cat: 'Bumbu' }) })
+
+      /* Baris langkah (bisa diseret untuk mengurutkan) */
+      var draggedStep = null
+      function addStepRow(text) {
+        var row = fromTemplate('tpl-step-row')
+        $('textarea', row).value = text
+        $('.remove', row).onclick = function () { row.remove(); numberSteps() }
+        row.addEventListener('dragstart', function () { draggedStep = row; row.classList.add('is-dragging') })
+        row.addEventListener('dragend', function () { row.classList.remove('is-dragging'); draggedStep = null; numberSteps() })
+        row.addEventListener('dragover', function (e) {
+          e.preventDefault()
+          if (!draggedStep || draggedStep === row) return
+          var rows = $all('.step-row')
+          var before = rows.indexOf(draggedStep) > rows.indexOf(row)
+          row.parentNode.insertBefore(draggedStep, before ? row : row.nextSibling)
+        })
+        $('#step-rows').append(row)
+        numberSteps()
+        refreshIcons()
+      }
+      function numberSteps() {
+        $all('#step-rows .step-row').forEach(function (row, i) {
+          $('.step-num', row).textContent = i + 1
+          $('textarea', row).setAttribute('aria-label', 'Langkah ' + (i + 1))
+        })
+      }
+      $('#add-step').addEventListener('click', function () { addStepRow('') })
+
+      /* Simpan */
+      recipeForm.addEventListener('submit', async function (e) {
+        e.preventDefault()
+        var f = recipeForm
+        var ingredients = $all('#ingredient-rows .ingredient-row').map(function (row) {
+          return { name: $('.ing-name', row).value.trim(), qty: Number($('.ing-qty', row).value) || 0, unit: $('.ing-unit', row).value, cat: $('.ing-cat', row).value }
+        }).filter(function (i) { return i.name })
+        var steps = $all('#step-rows textarea').map(function (t) { return t.value.trim() }).filter(Boolean)
+
+        var errors = {}
+        if (!f.elements.title.value.trim()) errors.title = 'Judul resep wajib diisi'
+        if (!ingredients.length) errors.ingredients = 'Tambahkan minimal satu bahan'
+        if (!steps.length) errors.steps = 'Tambahkan minimal satu langkah'
+        showErrors(f, errors)
+        f.elements.title.classList.toggle('has-error', !!errors.title)
+        $('#ingredients-card').classList.toggle('has-error', !!errors.ingredients)
+        $('#steps-card').classList.toggle('has-error', !!errors.steps)
+        if (Object.keys(errors).length) { toast('Masih ada isian yang perlu dilengkapi', true); return }
+
+        var old = findRecipe(editingId)
+        var title = f.elements.title.value.trim()
+        var recipe = {
+          id: editingId || title.toLowerCase().replace(/\W+/g, '-') + '-' + Date.now().toString(36),
+          title: title,
+          desc: f.desc.value.trim(),
+          cat: f.cat.value,
+          difficulty: f.difficulty.value,
+          time: Number(f.time.value),
+          servings: Number(f.servings.value),
+          origin: f.origin.value.trim() || currentUser.name,
+          story: f.story.value.trim(),
+          img: formPhoto || 'https://images.unsplash.com/photo-1666239308347-4292ea2ff777?w=800&h=600&fit=crop&auto=format',
+          fav: old ? old.fav : false,
+          ingredients: ingredients,
+          steps: steps,
+        }
+        try {
+          await store.saveRecipe(recipe)
+        } catch (err) {
+          toast('Gagal menyimpan: foto mungkin terlalu besar', true)
+          return
+        }
+        if (!old) await store.addActivity(currentUser.name, 'menambahkan resep', recipe.title)
+        toast('Resep berhasil disimpan!')
+        go('detail', recipe.id)
+      })
+
+
+      /* =========================================================
+         11. MENU MINGGUAN
+         ========================================================= */
+      var planner = { week: 0, day: todayName(), pickKey: null }
+
+      function weekStart(offset) {
+        var monday = new Date()
+        monday.setDate(monday.getDate() - ((monday.getDay() + 6) % 7) + offset * 7)
+        return monday
+      }
+
+      pageRenderers.menu = function () {
+        var monday = weekStart(planner.week)
+        var sunday = new Date(monday)
+        sunday.setDate(monday.getDate() + 6)
+        var short = function (d) { return d.toLocaleDateString('id-ID', { day: 'numeric', month: 'short' }) }
+        $('#week-label').textContent = (planner.week === 0 ? 'Minggu ini · ' : '') + short(monday) + ' – ' + short(sunday) + ' ' + sunday.getFullYear()
+
+        var filled = Object.keys(store.data.plan).filter(function (k) { return findRecipe(store.data.plan[k]) }).length
+        $('#plan-count').textContent = filled + ' dari 21 waktu makan sudah terisi'
+        $('#plan-progress').style.width = (filled / 21) * 100 + '%'
+
+        var grid = $('#week-grid')
+        grid.innerHTML = '<div></div>'
+        SLOTS.forEach(function (s) { grid.insertAdjacentHTML('beforeend', '<div class="col-label">' + s + '</div>') })
+        DAYS.forEach(function (day, i) {
+          var date = new Date(monday)
+          date.setDate(monday.getDate() + i)
+          var label = document.createElement('div')
+          label.className = 'day-label'
+          label.innerHTML = '<strong></strong><small></small>'
+          $('strong', label).textContent = day
+          $('small', label).textContent = date.getDate() + ' ' + date.toLocaleDateString('id-ID', { month: 'short' })
+          grid.append(label)
+          SLOTS.forEach(function (slot) { grid.append(slotCell(day, slot)) })
+        })
+
+        var tabs = $('#day-tabs')
+        tabs.innerHTML = ''
+        DAYS.forEach(function (day) {
+          var tab = document.createElement('button')
+          tab.type = 'button'
+          tab.className = 'day-tab' + (day === planner.day ? ' is-active' : '')
+          tab.textContent = day.slice(0, 3)
+          tab.onclick = function () { planner.day = day; pageRenderers.menu(); refreshIcons() }
+          tabs.append(tab)
+        })
+        var slots = $('#day-slots')
+        slots.innerHTML = ''
+        SLOTS.forEach(function (slot) {
+          var wrap = document.createElement('div')
+          wrap.innerHTML = '<p class="col-label"></p>'
+          $('p', wrap).textContent = slot
+          wrap.append(slotCell(planner.day, slot))
+          slots.append(wrap)
+        })
+        refreshIcons()
+      }
+
+      function slotCell(day, slot) {
+        var key = day + '-' + slot
+        var recipe = findRecipe(store.data.plan[key])
+        var cell = fromTemplate('tpl-slot')
+        if (recipe) {
+          $('.slot-empty', cell).remove()
+          $('img', cell).src = recipe.img
+          $('.slot-title', cell).textContent = recipe.title
+          $('.slot-pick', cell).onclick = function () { openPicker(key) }
+          $('.slot-clear', cell).onclick = async function () { await store.setPlanSlot(key, null); pageRenderers.menu() }
+        } else {
+          $('.slot-filled', cell).remove()
+          $('.slot-empty', cell).onclick = function () { openPicker(key) }
+        }
+        return cell
+      }
+
+      $('#week-prev').addEventListener('click', function () { planner.week -= 1; pageRenderers.menu() })
+      $('#week-next').addEventListener('click', function () { planner.week += 1; pageRenderers.menu() })
+      $('#make-shopping-list').addEventListener('click', function () {
+        go('belanja')
+        toast('Daftar belanja dibuat dari menu minggu ini')
+      })
+
+      /* Pilih resep untuk satu waktu makan */
+      function openPicker(key) {
+        planner.pickKey = key
+        $('#pick-title').textContent = 'Pilih resep · ' + key.replace('-', ', ')
+        $('#pick-search').value = ''
+        renderPickList()
+        $('#modal-pick').showModal()
+        $('#pick-search').focus()
+      }
+      function renderPickList() {
+        var query = $('#pick-search').value.toLowerCase()
+        var list = $('#pick-list')
+        list.innerHTML = ''
+        var results = store.data.recipes.filter(function (r) { return r.title.toLowerCase().includes(query) })
+        results.forEach(function (r) {
+          var item = fromTemplate('tpl-pick-item')
+          $('img', item).src = r.img
+          $('.pick-name', item).textContent = r.title
+          $('.pick-sub', item).textContent = r.cat + ' · ' + r.time + ' mnt'
+          $('button', item).onclick = async function () {
+            await store.setPlanSlot(planner.pickKey, r.id)
+            await store.addActivity(currentUser.name, 'mengisi menu', planner.pickKey.replace('-', ' · '))
+            $('#modal-pick').close()
+            pageRenderers.menu()
+          }
+          list.append(item)
+        })
+        if (!results.length) list.innerHTML = '<li class="muted center pad">Resep tidak ditemukan.</li>'
+      }
+      $('#pick-search').addEventListener('input', renderPickList)
+
+
+      /* =========================================================
+         12. DAFTAR BELANJA
+         ========================================================= */
+      var shopping = { checked: new Set(), extra: [] }
+
+      function shoppingItems() {
+        var merged = new Map()
+        Object.values(store.data.plan).forEach(function (id) {
+          var recipe = findRecipe(id)
+          if (!recipe) return
+          recipe.ingredients.forEach(function (ing) {
+            var key = ing.name.toLowerCase() + '|' + ing.unit
+            var item = merged.get(key)
+            if (item) {
+              item.qty += ing.qty
+              if (item.from.indexOf(recipe.title) < 0) item.from.push(recipe.title)
+            } else {
+              merged.set(key, { key: key, name: ing.name, qty: ing.qty, unit: ing.unit, cat: ing.cat, from: [recipe.title] })
+            }
+          })
+        })
+        return Array.from(merged.values()).concat(shopping.extra)
+      }
+
+      pageRenderers.belanja = function () {
+        var items = shoppingItems()
+        var box = $('#shop-groups')
+        box.innerHTML = ''
+        SHOP_GROUPS.forEach(function (group) {
+          var list = items.filter(function (i) { return (SHOP_GROUPS.indexOf(i.cat) >= 0 ? i.cat : 'Lainnya') === group })
+          if (!list.length) return
+          var section = document.createElement('section')
+          section.className = 'panel padded-sm'
+          section.innerHTML = '<h2 class="group-title"><span></span><small></small></h2><ul class="check-list"></ul>'
+          $('h2 span', section).textContent = group
+          $('h2 small', section).textContent = list.length + ' barang'
+          list.forEach(function (i) {
+            var row = fromTemplate('tpl-check-item')
+            var button = $('button', row)
+            button.classList.add('large')
+            button.classList.toggle('is-checked', shopping.checked.has(i.key))
+            $('.check-name', row).textContent = i.name
+            $('.check-sub', row).textContent = i.from.length ? 'untuk ' + i.from.join(', ') : ''
+            if (i.unit) {
+              $('.qty', row).textContent = Number(i.qty.toFixed(1))
+              $('.unit', row).textContent = i.unit
+            } else {
+              $('.check-qty', row).remove()
+            }
+            button.onclick = function () {
+              shopping.checked.has(i.key) ? shopping.checked.delete(i.key) : shopping.checked.add(i.key)
+              pageRenderers.belanja()
+            }
+            $('ul', section).append(row)
+          })
+          box.append(section)
+        })
+        $('#shop-empty').hidden = items.length > 0
+
+        var done = items.filter(function (i) { return shopping.checked.has(i.key) }).length
+        var cost = items.reduce(function (sum, i) { return sum + (PRICE_PER_ITEM[i.cat] || 5000) }, 0)
+        $('#shop-done').textContent = done
+        $('#shop-total').textContent = items.length
+        $('#shop-progress').style.width = (items.length ? (done / items.length) * 100 : 0) + '%'
+        $('#shop-cost').textContent = 'Rp ' + cost.toLocaleString('id-ID')
+        refreshIcons()
+      }
+
+      $('#shop-add').addEventListener('submit', function (e) {
+        e.preventDefault()
+        var name = e.target.elements.extra.value.trim()
+        if (!name) return
+        shopping.extra.push({ key: 'extra-' + Date.now(), name: name, qty: 1, unit: '', cat: 'Tambahan', from: [] })
+        e.target.reset()
+        pageRenderers.belanja()
+      })
+      $('#shop-share').addEventListener('click', function () {
+        var text = shoppingItems().map(function (i) { return '- ' + i.name + (i.unit ? ' ' + Number(i.qty.toFixed(1)) + ' ' + i.unit : '') }).join('\n')
+        if (navigator.clipboard) navigator.clipboard.writeText('Daftar Belanja\n' + text).catch(function () {})
+        toast('Daftar belanja disalin')
+      })
+      $('#shop-reset').addEventListener('click', function () {
+        shopping = { checked: new Set(), extra: [] }
+        pageRenderers.belanja()
+      })
+
+
+      /* =========================================================
+         13. KELUARGA
+         ========================================================= */
+      pageRenderers.keluarga = function () {
+        var family = store.data.family
+        $('#family-name').textContent = family.name
+        $('#family-code').textContent = family.code
+        $('#invite-code').textContent = family.code
+        $('#member-count').textContent = 'Anggota (' + store.data.members.length + ')'
+
+        var list = $('#member-list')
+        list.innerHTML = ''
+        store.data.members.forEach(function (m) {
+          var item = fromTemplate('tpl-member')
+          paintAvatar($('.avatar', item), m.name)
+          $('.member-name', item).textContent = m.name + (m.email === currentUser.email ? ' (Anda)' : '')
+          $('.member-sub', item).textContent = m.email
+          $('.role', item).textContent = m.role
+          $('.role', item).classList.toggle('is-admin', m.role === 'Admin')
+          list.append(item)
+        })
+
+        var activity = $('#activity-list')
+        activity.innerHTML = ''
+        store.data.activity.slice(0, 8).forEach(function (a) {
+          var li = document.createElement('li')
+          li.innerHTML = '<p><strong class="who"></strong> <span class="what"></span> <strong class="obj"></strong></p><p class="small muted when"></p>'
+          $('.who', li).textContent = a.who
+          $('.what', li).textContent = a.what
+          $('.obj', li).textContent = a.obj
+          $('.when', li).textContent = timeAgo(a.at)
+          activity.append(li)
+        })
+        $('#activity-empty').hidden = store.data.activity.length > 0
+      }
+
+      $('#copy-code').addEventListener('click', function () {
+        if (navigator.clipboard) navigator.clipboard.writeText(store.data.family.code).catch(function () {})
+        toast('Kode keluarga disalin')
+      })
+      $('#invite-open').addEventListener('click', function () { $('#invite-form').reset(); $('#modal-invite').showModal() })
+      $('#invite-form').addEventListener('submit', async function (e) {
+        e.preventDefault()
+        var name = e.target.elements.name.value.trim()
+        var contact = e.target.contact.value.trim()
+        if (name && contact) {
+          await store.saveMember({ name: name, email: contact, role: 'Anggota' })
+          await store.addActivity(currentUser.name, 'mengundang', name)
+        }
+        $('#modal-invite').close()
+        toast('Undangan terkirim')
+        pageRenderers.keluarga()
+        renderChrome()
+      })
+
+
+      /* =========================================================
+         14. PROFIL
+         ========================================================= */
+      pageRenderers.profil = function () {
+        paintAvatar($('#profile-avatar'), currentUser.name)
+        $('#profile-name').textContent = currentUser.name
+        $('#profile-email').textContent = currentUser.email + ' · ' + currentUser.role + ' ' + store.data.family.name
+        $('#profile-form').elements.name.value = currentUser.name
+        $('#profile-form').email.value = currentUser.email
+        $('#password-form').reset()
+        paintDarkSwitch()
+      }
+
+      $('#profile-form').addEventListener('submit', async function (e) {
+        e.preventDefault()
+        var name = e.target.elements.name.value.trim()
+        var email = e.target.elements.email.value.trim()
+        if (!name || !/\S+@\S+\.\S+/.test(email)) { toast('Nama dan email harus diisi dengan benar', true); return }
+        store.data.members = store.data.members.filter(function (m) { return m.email !== currentUser.email })
+        currentUser = { name: name, email: email, role: currentUser.role }
+        await store.saveMember(currentUser)
+        toast('Profil diperbarui')
+        go('profil')
+      })
+      $('#password-form').addEventListener('submit', function (e) {
+        e.preventDefault()
+        if (e.target.new.value.length < 6) { toast('Password baru minimal 6 karakter', true); return }
+        e.target.reset()
+        toast('Password berhasil diganti')
+      })
+
+      /* Mode gelap (diingat di browser) */
+      if (localStorage.getItem('dapur-warisan-dark') === '1') document.documentElement.classList.add('dark')
+      function paintDarkSwitch() {
+        var on = document.documentElement.classList.contains('dark')
+        $('#dark-switch').setAttribute('aria-checked', on)
+      }
+      $('#dark-switch').addEventListener('click', function () {
+        var on = document.documentElement.classList.toggle('dark')
+        localStorage.setItem('dapur-warisan-dark', on ? '1' : '0')
+        paintDarkSwitch()
+      })
+
+
+      /* =========================================================
+         15. MULAI
+         ========================================================= */
+      var params = new URLSearchParams(location.search)
+      if (params.has('ekspresi')) {
+        location.replace('ekspresi/' + (params.get('ekspresi') ? '?frame=' + params.get('ekspresi') : ''))
+      } else {
+        store.load().then(function () {
+          setAuthMode('masuk')
+          refreshIcons()
+        })
+      }
+    </script>
+  </body>
+</html>
