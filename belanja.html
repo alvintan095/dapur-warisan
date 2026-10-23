@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="id-ID">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Daftar Belanja — Dapur Warisan</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,500;0,600;0,700;1,500&family=Nunito:wght@400;500;600;700;800&display=swap" />
+    <link rel="stylesheet" href="style.css" />
+    <script>
+      if (localStorage.getItem('dapur-warisan-dark') === '1') document.documentElement.classList.add('dark');
+      if (!localStorage.getItem('dapur-warisan-user')) location.replace('index.html');
+    </script>
+  </head>
+  <body data-page="belanja">
+    <div id="app" class="layout">
+      <!-- Navigasi Samping (Desktop) - Total 7 Menu Fitur -->
+      <aside class="sidebar">
+        <button type="button" class="brand" data-go="beranda">
+          <span class="brand-mark"><i data-lucide="book-heart"></i></span>Dapur Warisan
+        </button>
+        <nav class="side-nav">
+          <button type="button" class="nav-link" data-go="beranda"><i data-lucide="house"></i>Beranda</button>
+          <button type="button" class="nav-link" data-go="resep"><i data-lucide="book-open"></i>Koleksi Resep</button>
+          <button type="button" class="nav-link" data-go="favorit"><i data-lucide="heart"></i>Resep Favorit</button>
+          <button type="button" class="nav-link" data-go="menu"><i data-lucide="calendar-days"></i>Menu Mingguan</button>
+          <button type="button" class="nav-link" data-go="belanja"><i data-lucide="shopping-basket"></i>Daftar Belanja</button>
+          <button type="button" class="nav-link" data-go="keluarga"><i data-lucide="users"></i>Keluarga</button>
+          <button type="button" class="nav-link" data-go="profil"><i data-lucide="user-round"></i>Profil</button>
+        </nav>
+        <div class="family-box">
+          <p class="family-name">Keluarga</p>
+          <div class="avatar-group"></div>
+        </div>
+      </aside>
+
+      <!-- Bilah Atas (Header Pencarian & Profil) -->
+      <header class="topbar">
+        <div class="topbar-inner">
+          <span class="brand-small"><i data-lucide="book-heart"></i>Dapur Warisan</span>
+          <button type="button" class="search-pill" data-go="resep"><i data-lucide="search"></i><span>Cari resep keluarga…</span></button>
+          <button type="button" class="profile-button" data-go="profil" aria-label="Profil"><span class="avatar" id="top-avatar"></span></button>
+        </div>
+      </header>
+
+      <main class="content">
+        <section class="page" data-page="belanja">
+          <div class="shop-layout">
+            <div>
+              <h1 class="title">Daftar Belanja</h1>
+              <p class="muted">Dibuat otomatis dari menu minggu ini · bahan yang sama sudah digabung</p>
+
+              <form id="shop-add" class="inline-form">
+                <input name="extra" placeholder="Tambah barang lain, mis. minyak goreng" />
+                <button type="submit" class="btn btn-primary"><i data-lucide="plus"></i><span class="hide-mobile">Tambah</span></button>
+              </form>
+
+              <div id="shop-groups" class="shop-groups-compact"></div>
+
+              <div class="empty" id="shop-empty" hidden>
+                <i data-lucide="shopping-basket" class="big-icon"></i>
+                <p class="heading">Daftar belanja masih kosong</p>
+                <p class="muted">Isi menu mingguan dulu, nanti bahan-bahannya muncul di sini.</p>
+                <button type="button" class="btn btn-primary" data-go="menu">Susun Menu</button>
+              </div>
+            </div>
+
+            <aside class="side-sticky">
+              <div class="shop-summary">
+                <p class="summary-label">Progres belanja</p>
+                <p class="summary-big"><span id="shop-done">0</span><small>/<span id="shop-total">0</span></small></p>
+                <div class="progress light"><div id="shop-progress"></div></div>
+                <div class="summary-cost">
+                  <p>Perkiraan biaya</p>
+                  <p class="summary-price" id="shop-cost">Rp 0</p>
+                </div>
+              </div>
+              <div class="three-buttons">
+                <button type="button" class="btn btn-secondary stacked" onclick="window.print()"><i data-lucide="printer"></i>Cetak</button>
+                <button type="button" class="btn btn-secondary stacked" id="shop-share"><i data-lucide="share-2"></i>Bagikan</button>
+                <button type="button" class="btn btn-secondary stacked" id="shop-reset"><i data-lucide="rotate-ccw"></i>Reset</button>
+              </div>
+            </aside>
+          </div>
+        </section>
+      </main>
+
+      <!-- Navigasi Bawah (Ponsel) -->
+      <nav class="bottom-nav">
+        <button type="button" data-go="beranda"><i data-lucide="house"></i>Beranda</button>
+        <button type="button" data-go="resep"><i data-lucide="book-open"></i>Resep</button>
+        <button type="button" data-go="favorit"><i data-lucide="heart"></i>Favorit</button>
+        <button type="button" data-go="menu"><i data-lucide="calendar-days"></i>Menu</button>
+        <button type="button" data-go="belanja"><i data-lucide="shopping-basket"></i>Belanja</button>
+        <button type="button" data-go="keluarga"><i data-lucide="users"></i>Keluarga</button>
+        <button type="button" data-go="profil"><i data-lucide="user-round"></i>Profil</button>
+      </nav>
+    </div>
+
+    <div id="toast" class="toast" role="status" hidden></div>
+
+    <!-- Cetakan Komponen HTML (<template>) -->
+    <template id="tpl-check-item">
+      <li>
+        <button type="button" class="check-item">
+          <span class="checkbox"><i data-lucide="check"></i></span>
+          <span class="check-text"><span class="check-name"></span><span class="check-sub"></span></span>
+          <span class="check-qty"><strong class="qty"></strong> <span class="unit"></span></span>
+        </button>
+      </li>
+    </template>
+
+    <script src="lucide.min.js"></script>
+    <script src="app.js"></script>
+  </body>
+</html>

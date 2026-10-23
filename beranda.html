@@ -1,0 +1,200 @@
+<!doctype html>
+<html lang="id-ID">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Beranda — Dapur Warisan</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,500;0,600;0,700;1,500&family=Nunito:wght@400;500;600;700;800&display=swap" />
+    <link rel="stylesheet" href="style.css" />
+    <script>
+      if (localStorage.getItem('dapur-warisan-dark') === '1') document.documentElement.classList.add('dark');
+      if (!localStorage.getItem('dapur-warisan-user')) location.replace('index.html');
+    </script>
+  </head>
+  <body data-page="beranda">
+    <div id="app" class="layout">
+      <!-- Navigasi Samping (Desktop) - Total 7 Menu Fitur -->
+      <aside class="sidebar">
+        <button type="button" class="brand" data-go="beranda">
+          <span class="brand-mark"><i data-lucide="book-heart"></i></span>Dapur Warisan
+        </button>
+        <nav class="side-nav">
+          <button type="button" class="nav-link" data-go="beranda"><i data-lucide="house"></i>Beranda</button>
+          <button type="button" class="nav-link" data-go="resep"><i data-lucide="book-open"></i>Koleksi Resep</button>
+          <button type="button" class="nav-link" data-go="favorit"><i data-lucide="heart"></i>Resep Favorit</button>
+          <button type="button" class="nav-link" data-go="menu"><i data-lucide="calendar-days"></i>Menu Mingguan</button>
+          <button type="button" class="nav-link" data-go="belanja"><i data-lucide="shopping-basket"></i>Daftar Belanja</button>
+          <button type="button" class="nav-link" data-go="keluarga"><i data-lucide="users"></i>Keluarga</button>
+          <button type="button" class="nav-link" data-go="profil"><i data-lucide="user-round"></i>Profil</button>
+        </nav>
+        <div class="family-box">
+          <p class="family-name">Keluarga</p>
+          <div class="avatar-group"></div>
+        </div>
+      </aside>
+
+      <!-- Bilah Atas (Header Pencarian & Profil) -->
+      <header class="topbar">
+        <div class="topbar-inner">
+          <span class="brand-small"><i data-lucide="book-heart"></i>Dapur Warisan</span>
+          <button type="button" class="search-pill" data-go="resep"><i data-lucide="search"></i><span>Cari resep keluarga…</span></button>
+          <button type="button" class="profile-button" data-go="profil" aria-label="Profil"><span class="avatar" id="top-avatar"></span></button>
+        </div>
+      </header>
+
+      <main class="content">
+        <section class="page" data-page="beranda">
+          <header class="home-header">
+            <div>
+              <p class="eyebrow" id="home-date"></p>
+              <h1 class="title"><span id="home-greeting"></span><br /><em class="primary">Hari ini masak apa?</em></h1>
+            </div>
+            <div class="quick-actions">
+              <button type="button" class="quick" data-go="form"><span class="quick-icon"><i data-lucide="plus"></i></span>Tambah Resep</button>
+              <button type="button" class="quick" data-go="menu"><span class="quick-icon"><i data-lucide="calendar-days"></i></span>Susun Menu</button>
+              <button type="button" class="quick" data-go="belanja"><span class="quick-icon"><i data-lucide="shopping-basket"></i></span>Daftar Belanja</button>
+            </div>
+          </header>
+
+          <section class="card padded">
+            <div class="section-head">
+              <h2 class="heading">Menu Hari Ini</h2>
+              <button type="button" class="btn btn-ghost" data-go="menu">Ubah menu <i data-lucide="arrow-right"></i></button>
+            </div>
+            <div class="today-grid" id="home-today"></div>
+          </section>
+
+          <section>
+            <div class="section-head">
+              <h2 class="heading-lg">Resep Terbaru</h2>
+              <button type="button" class="btn btn-ghost" data-go="resep">Lihat semua <i data-lucide="arrow-right"></i></button>
+            </div>
+            <div class="scroller" id="home-recent"></div>
+          </section>
+
+          <section class="heirloom" id="home-heirloom" hidden>
+            <div class="heirloom-photo"><img alt="" /></div>
+            <div class="heirloom-text">
+              <span class="pill-accent">Resep Warisan</span>
+              <h2 class="heading-lg"></h2>
+              <p class="heirloom-story"></p>
+              <p class="heirloom-origin"></p>
+              <button type="button" class="btn btn-primary">Buka resep <i data-lucide="arrow-right"></i></button>
+            </div>
+          </section>
+        </section>
+      </main>
+
+      <!-- Navigasi Bawah (Ponsel) -->
+      <nav class="bottom-nav">
+        <button type="button" data-go="beranda"><i data-lucide="house"></i>Beranda</button>
+        <button type="button" data-go="resep"><i data-lucide="book-open"></i>Resep</button>
+        <button type="button" data-go="favorit"><i data-lucide="heart"></i>Favorit</button>
+        <button type="button" data-go="menu"><i data-lucide="calendar-days"></i>Menu</button>
+        <button type="button" data-go="belanja"><i data-lucide="shopping-basket"></i>Belanja</button>
+        <button type="button" data-go="keluarga"><i data-lucide="users"></i>Keluarga</button>
+        <button type="button" data-go="profil"><i data-lucide="user-round"></i>Profil</button>
+      </nav>
+    </div>
+
+    <div id="toast" class="toast" role="status" hidden></div>
+
+    <!-- Cetakan Komponen HTML (<template>) -->
+    <template id="tpl-recipe-card">
+      <article class="recipe-card">
+        <div class="recipe-photo">
+          <img loading="lazy" alt="" />
+          <button type="button" class="fav-btn" aria-label="Favorit"><i data-lucide="heart"></i></button>
+          <span class="heirloom-badge" hidden>Resep Warisan</span>
+        </div>
+        <div class="recipe-body">
+          <span class="tag"></span>
+          <h3 class="recipe-title"></h3>
+          <div class="recipe-meta">
+            <span><i data-lucide="clock"></i><span class="time"></span></span>
+            <span><i data-lucide="users"></i><span class="serves"></span> porsi</span>
+          </div>
+        </div>
+      </article>
+    </template>
+
+    <template id="tpl-skeleton">
+      <div class="recipe-card skeleton"><div class="recipe-photo"></div><div class="recipe-body"><div class="bar short"></div><div class="bar"></div></div></div>
+    </template>
+
+    <template id="tpl-today">
+      <button type="button" class="today-item">
+        <img alt="" />
+        <span class="today-empty"><i data-lucide="plus"></i></span>
+        <span>
+          <span class="slot-label"><i></i><span class="slot-name"></span></span>
+          <span class="today-title"></span>
+        </span>
+      </button>
+    </template>
+
+    <template id="tpl-check-item">
+      <li>
+        <button type="button" class="check-item">
+          <span class="checkbox"><i data-lucide="check"></i></span>
+          <span class="check-text"><span class="check-name"></span><span class="check-sub"></span></span>
+          <span class="check-qty"><strong class="qty"></strong> <span class="unit"></span></span>
+        </button>
+      </li>
+    </template>
+
+    <template id="tpl-ingredient-row">
+      <div class="ingredient-row">
+        <input class="ing-name" aria-label="Nama bahan" placeholder="Nama bahan" />
+        <input class="ing-qty" aria-label="Jumlah" type="number" min="0" step="any" value="1" />
+        <select class="ing-unit" aria-label="Satuan"></select>
+        <select class="ing-cat" aria-label="Jenis bahan"><option>Bumbu</option><option>Sayur</option><option>Daging</option><option>Lainnya</option></select>
+        <button type="button" class="btn btn-icon remove" aria-label="Hapus bahan"><i data-lucide="trash-2"></i></button>
+      </div>
+    </template>
+
+    <template id="tpl-step-row">
+      <div class="step-row" draggable="true">
+        <span class="grip" aria-label="Seret untuk mengurutkan"><i data-lucide="grip-vertical"></i></span>
+        <span class="step-num"></span>
+        <textarea rows="2" placeholder="Tulis langkahnya…"></textarea>
+        <button type="button" class="btn btn-icon remove" aria-label="Hapus langkah"><i data-lucide="trash-2"></i></button>
+      </div>
+    </template>
+
+    <template id="tpl-slot">
+      <div class="slot">
+        <button type="button" class="slot-empty"><i data-lucide="plus"></i>Pilih resep</button>
+        <div class="slot-filled">
+          <button type="button" class="slot-pick"><img alt="" /><span class="slot-title"></span></button>
+          <button type="button" class="slot-clear" aria-label="Kosongkan"><i data-lucide="x"></i></button>
+        </div>
+      </div>
+    </template>
+
+    <template id="tpl-member">
+      <li class="member">
+        <span class="avatar"></span>
+        <div class="member-text"><p class="member-name"></p><p class="small muted member-sub"></p></div>
+        <span class="role"></span>
+      </li>
+    </template>
+
+    <template id="tpl-pick-item">
+      <li><button type="button" class="pick-item"><img alt="" /><span><strong class="pick-name"></strong><small class="muted pick-sub"></small></span></button></li>
+    </template>
+
+    <template id="tpl-category-row">
+      <div class="inline-form">
+        <input class="cat-edit-input" aria-label="Nama kategori" />
+        <button type="button" class="btn btn-icon save-cat" aria-label="Simpan perubahan nama kategori"><i data-lucide="check"></i></button>
+        <button type="button" class="btn btn-icon remove delete-cat" aria-label="Hapus kategori"><i data-lucide="trash-2"></i></button>
+      </div>
+    </template>
+
+    <script src="lucide.min.js"></script>
+    <script src="app.js"></script>
+  </body>
+</html>
