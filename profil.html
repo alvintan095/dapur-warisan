@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="id-ID">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Profil & Pengaturan — Dapur Warisan</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,500;0,600;0,700;1,500&family=Nunito:wght@400;500;600;700;800&display=swap" />
+    <link rel="stylesheet" href="style.css" />
+    <script>
+      if (localStorage.getItem('dapur-warisan-dark') === '1') document.documentElement.classList.add('dark');
+      if (!localStorage.getItem('dapur-warisan-user')) location.replace('index.html');
+    </script>
+  </head>
+  <body data-page="profil">
+    <div id="app" class="layout">
+      <!-- Navigasi Samping (Desktop) - Total 7 Menu Fitur -->
+      <aside class="sidebar">
+        <button type="button" class="brand" data-go="beranda">
+          <span class="brand-mark"><i data-lucide="book-heart"></i></span>Dapur Warisan
+        </button>
+        <nav class="side-nav">
+          <button type="button" class="nav-link" data-go="beranda"><i data-lucide="house"></i>Beranda</button>
+          <button type="button" class="nav-link" data-go="resep"><i data-lucide="book-open"></i>Koleksi Resep</button>
+          <button type="button" class="nav-link" data-go="favorit"><i data-lucide="heart"></i>Resep Favorit</button>
+          <button type="button" class="nav-link" data-go="menu"><i data-lucide="calendar-days"></i>Menu Mingguan</button>
+          <button type="button" class="nav-link" data-go="belanja"><i data-lucide="shopping-basket"></i>Daftar Belanja</button>
+          <button type="button" class="nav-link" data-go="keluarga"><i data-lucide="users"></i>Keluarga</button>
+          <button type="button" class="nav-link" data-go="profil"><i data-lucide="user-round"></i>Profil</button>
+        </nav>
+        <div class="family-box">
+          <p class="family-name">Keluarga</p>
+          <div class="avatar-group"></div>
+        </div>
+      </aside>
+
+      <!-- Bilah Atas (Header Pencarian & Profil) -->
+      <header class="topbar">
+        <div class="topbar-inner">
+          <span class="brand-small"><i data-lucide="book-heart"></i>Dapur Warisan</span>
+          <button type="button" class="search-pill" data-go="resep"><i data-lucide="search"></i><span>Cari resep keluarga…</span></button>
+          <button type="button" class="profile-button" data-go="profil" aria-label="Profil"><span class="avatar" id="top-avatar"></span></button>
+        </div>
+      </header>
+
+      <main class="content">
+        <section class="page narrow-2xl" data-page="profil">
+          <h1 class="title">Profil &amp; Pengaturan</h1>
+
+          <section class="panel profile-card">
+            <span class="avatar avatar-lg" id="profile-avatar"></span>
+            <div>
+              <p class="heading" id="profile-name"></p>
+              <p class="muted" id="profile-email"></p>
+            </div>
+          </section>
+
+          <form class="panel form-card" id="profile-form">
+            <h2 class="heading with-icon"><i data-lucide="user-round" class="primary"></i>Edit Profil</h2>
+            <div class="two-cols">
+              <label class="field"><span>Nama</span><input name="name" /></label>
+              <label class="field"><span>Email</span><input name="email" type="email" /></label>
+            </div>
+            <div><button type="submit" class="btn btn-primary">Simpan Perubahan</button></div>
+          </form>
+
+          <form class="panel form-card" id="password-form">
+            <h2 class="heading with-icon"><i data-lucide="key-round" class="primary"></i>Ganti Password</h2>
+            <div class="two-cols">
+              <label class="field"><span>Password lama</span><input name="old" type="password" /></label>
+              <label class="field"><span>Password baru</span><input name="new" type="password" /></label>
+            </div>
+            <div><button type="submit" class="btn btn-secondary">Ganti Password</button></div>
+          </form>
+
+          <section class="panel settings">
+            <label class="setting-row">
+              <i data-lucide="moon"></i><span>Mode gelap</span>
+              <button type="button" class="switch" id="dark-switch" role="switch" aria-checked="false"><span></span></button>
+            </label>
+            <button type="button" class="setting-row danger" id="logout"><i data-lucide="log-out"></i>Keluar</button>
+          </section>
+        </section>
+      </main>
+
+      <!-- Navigasi Bawah (Ponsel) -->
+      <nav class="bottom-nav">
+        <button type="button" data-go="beranda"><i data-lucide="house"></i>Beranda</button>
+        <button type="button" data-go="resep"><i data-lucide="book-open"></i>Resep</button>
+        <button type="button" data-go="favorit"><i data-lucide="heart"></i>Favorit</button>
+        <button type="button" data-go="menu"><i data-lucide="calendar-days"></i>Menu</button>
+        <button type="button" data-go="belanja"><i data-lucide="shopping-basket"></i>Belanja</button>
+        <button type="button" data-go="keluarga"><i data-lucide="users"></i>Keluarga</button>
+        <button type="button" data-go="profil"><i data-lucide="user-round"></i>Profil</button>
+      </nav>
+    </div>
+
+    <div id="toast" class="toast" role="status" hidden></div>
+
+    <script src="lucide.min.js"></script>
+    <script src="app.js"></script>
+  </body>
+</html>

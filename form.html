@@ -1,0 +1,166 @@
+<!doctype html>
+<html lang="id-ID">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tambah / Edit Resep — Dapur Warisan</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,500;0,600;0,700;1,500&family=Nunito:wght@400;500;600;700;800&display=swap" />
+    <link rel="stylesheet" href="style.css" />
+    <script>
+      if (localStorage.getItem('dapur-warisan-dark') === '1') document.documentElement.classList.add('dark');
+      if (!localStorage.getItem('dapur-warisan-user')) location.replace('index.html');
+    </script>
+  </head>
+  <body data-page="form">
+    <div id="app" class="layout">
+      <!-- Navigasi Samping (Desktop) - Total 7 Menu Fitur -->
+      <aside class="sidebar">
+        <button type="button" class="brand" data-go="beranda">
+          <span class="brand-mark"><i data-lucide="book-heart"></i></span>Dapur Warisan
+        </button>
+        <nav class="side-nav">
+          <button type="button" class="nav-link" data-go="beranda"><i data-lucide="house"></i>Beranda</button>
+          <button type="button" class="nav-link" data-go="resep"><i data-lucide="book-open"></i>Koleksi Resep</button>
+          <button type="button" class="nav-link" data-go="favorit"><i data-lucide="heart"></i>Resep Favorit</button>
+          <button type="button" class="nav-link" data-go="menu"><i data-lucide="calendar-days"></i>Menu Mingguan</button>
+          <button type="button" class="nav-link" data-go="belanja"><i data-lucide="shopping-basket"></i>Daftar Belanja</button>
+          <button type="button" class="nav-link" data-go="keluarga"><i data-lucide="users"></i>Keluarga</button>
+          <button type="button" class="nav-link" data-go="profil"><i data-lucide="user-round"></i>Profil</button>
+        </nav>
+        <div class="family-box">
+          <p class="family-name">Keluarga</p>
+          <div class="avatar-group"></div>
+        </div>
+      </aside>
+
+      <!-- Bilah Atas (Header Pencarian & Profil) -->
+      <header class="topbar">
+        <div class="topbar-inner">
+          <span class="brand-small"><i data-lucide="book-heart"></i>Dapur Warisan</span>
+          <button type="button" class="search-pill" data-go="resep"><i data-lucide="search"></i><span>Cari resep keluarga…</span></button>
+          <button type="button" class="profile-button" data-go="profil" aria-label="Profil"><span class="avatar" id="top-avatar"></span></button>
+        </div>
+      </header>
+
+      <main class="content">
+        <section class="page narrow-3xl with-savebar" data-page="form">
+          <button type="button" class="btn btn-ghost back" id="form-back"><i data-lucide="arrow-left"></i>Kembali</button>
+          <h1 class="title" id="form-title">Tambah Resep Baru</h1>
+          <p class="muted">Tulis resep seperti sedang menceritakannya ke cucu.</p>
+
+          <form id="recipe-form" class="stack-lg" novalidate>
+            <div class="dropzone" id="dropzone">
+              <img id="dropzone-img" alt="Foto resep" hidden />
+              <div class="dropzone-text" id="dropzone-text">
+                <i data-lucide="image-plus"></i>
+                <p><strong>Seret foto ke sini atau klik untuk memilih</strong></p>
+                <p class="small muted">JPG atau PNG, rasio 4:3 paling bagus</p>
+              </div>
+              <input type="file" id="photo-input" accept="image/*" hidden />
+            </div>
+
+            <section class="panel form-card">
+              <h2 class="heading">Informasi Dasar</h2>
+              <label class="field">
+                <span>Judul resep</span>
+                <input name="title" placeholder="mis. Sayur Lodeh Mbah Uti" />
+                <small class="error" data-error="title"></small>
+              </label>
+              <label class="field">
+                <span>Deskripsi singkat</span>
+                <textarea name="desc" rows="2" placeholder="Gurih, berkuah santan, cocok untuk makan siang."></textarea>
+              </label>
+              <div class="two-cols">
+                <label class="field"><span>Kategori</span><select name="cat" id="form-category"></select></label>
+                <label class="field">
+                  <span>Tingkat kesulitan</span>
+                  <select name="difficulty"><option>Mudah</option><option>Sedang</option><option>Sulit</option></select>
+                </label>
+                <div class="field">
+                  <span>Waktu masak (menit)</span>
+                  <div class="stepper" data-step="5"><button type="button" data-dir="-1" aria-label="Kurangi"><i data-lucide="minus"></i></button><output name="time">30</output><button type="button" data-dir="1" aria-label="Tambah"><i data-lucide="plus"></i></button></div>
+                </div>
+                <div class="field">
+                  <span>Porsi</span>
+                  <div class="stepper" data-step="1"><button type="button" data-dir="-1" aria-label="Kurangi"><i data-lucide="minus"></i></button><output name="servings">4</output><button type="button" data-dir="1" aria-label="Tambah"><i data-lucide="plus"></i></button></div>
+                </div>
+              </div>
+            </section>
+
+            <section class="panel form-card">
+              <h2 class="heading">Asal &amp; Kenangan</h2>
+              <label class="field">
+                <span>Asal resep</span>
+                <input name="origin" placeholder="mis. Nenek Ratna" />
+                <small class="hint">Siapa yang pertama kali memasak resep ini?</small>
+              </label>
+              <label class="field">
+                <span>Cerita / kenangan</span>
+                <textarea name="story" rows="3" placeholder="Ceritakan kapan resep ini biasa dimasak…"></textarea>
+              </label>
+            </section>
+
+            <section class="panel form-card" id="ingredients-card">
+              <h2 class="heading">Bahan-bahan</h2>
+              <p class="error" data-error="ingredients"></p>
+              <div id="ingredient-rows" class="stack-sm"></div>
+              <button type="button" class="btn btn-secondary dashed" id="add-ingredient"><i data-lucide="plus"></i>Tambah bahan</button>
+            </section>
+
+            <section class="panel form-card" id="steps-card">
+              <h2 class="heading">Langkah Memasak</h2>
+              <p class="error" data-error="steps"></p>
+              <div id="step-rows" class="stack-sm"></div>
+              <button type="button" class="btn btn-secondary dashed" id="add-step"><i data-lucide="plus"></i>Tambah langkah</button>
+            </section>
+          </form>
+
+          <div class="savebar">
+            <div class="savebar-inner">
+              <button type="button" class="btn btn-secondary" id="form-cancel">Batal</button>
+              <button type="submit" form="recipe-form" class="btn btn-primary"><i data-lucide="check"></i>Simpan Resep</button>
+            </div>
+          </div>
+        </section>
+      </main>
+
+      <!-- Navigasi Bawah (Ponsel) -->
+      <nav class="bottom-nav">
+        <button type="button" data-go="beranda"><i data-lucide="house"></i>Beranda</button>
+        <button type="button" data-go="resep"><i data-lucide="book-open"></i>Resep</button>
+        <button type="button" data-go="favorit"><i data-lucide="heart"></i>Favorit</button>
+        <button type="button" data-go="menu"><i data-lucide="calendar-days"></i>Menu</button>
+        <button type="button" data-go="belanja"><i data-lucide="shopping-basket"></i>Belanja</button>
+        <button type="button" data-go="keluarga"><i data-lucide="users"></i>Keluarga</button>
+        <button type="button" data-go="profil"><i data-lucide="user-round"></i>Profil</button>
+      </nav>
+    </div>
+
+    <div id="toast" class="toast" role="status" hidden></div>
+
+    <!-- Cetakan Komponen HTML (<template>) -->
+    <template id="tpl-ingredient-row">
+      <div class="ingredient-row">
+        <input class="ing-name" aria-label="Nama bahan" placeholder="Nama bahan" />
+        <input class="ing-qty" aria-label="Jumlah" type="number" min="0" step="any" value="1" />
+        <select class="ing-unit" aria-label="Satuan"></select>
+        <select class="ing-cat" aria-label="Jenis bahan"><option>Bumbu</option><option>Sayur</option><option>Daging</option><option>Lainnya</option></select>
+        <button type="button" class="btn btn-icon remove" aria-label="Hapus bahan"><i data-lucide="trash-2"></i></button>
+      </div>
+    </template>
+
+    <template id="tpl-step-row">
+      <div class="step-row" draggable="true">
+        <span class="grip" aria-label="Seret untuk mengurutkan"><i data-lucide="grip-vertical"></i></span>
+        <span class="step-num"></span>
+        <textarea rows="2" placeholder="Tulis langkahnya…"></textarea>
+        <button type="button" class="btn btn-icon remove" aria-label="Hapus langkah"><i data-lucide="trash-2"></i></button>
+      </div>
+    </template>
+
+    <script src="lucide.min.js"></script>
+    <script src="app.js"></script>
+  </body>
+</html>

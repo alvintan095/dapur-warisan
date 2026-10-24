@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="id-ID">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Perencana Menu — Dapur Warisan</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,500;0,600;0,700;1,500&family=Nunito:wght@400;500;600;700;800&display=swap" />
+    <link rel="stylesheet" href="style.css" />
+    <script>
+      if (localStorage.getItem('dapur-warisan-dark') === '1') document.documentElement.classList.add('dark');
+      if (!localStorage.getItem('dapur-warisan-user')) location.replace('index.html');
+    </script>
+  </head>
+  <body data-page="menu">
+    <div id="app" class="layout">
+      <!-- Navigasi Samping (Desktop) - Total 7 Menu Fitur -->
+      <aside class="sidebar">
+        <button type="button" class="brand" data-go="beranda">
+          <span class="brand-mark"><i data-lucide="book-heart"></i></span>Dapur Warisan
+        </button>
+        <nav class="side-nav">
+          <button type="button" class="nav-link" data-go="beranda"><i data-lucide="house"></i>Beranda</button>
+          <button type="button" class="nav-link" data-go="resep"><i data-lucide="book-open"></i>Koleksi Resep</button>
+          <button type="button" class="nav-link" data-go="favorit"><i data-lucide="heart"></i>Resep Favorit</button>
+          <button type="button" class="nav-link" data-go="menu"><i data-lucide="calendar-days"></i>Menu Mingguan</button>
+          <button type="button" class="nav-link" data-go="belanja"><i data-lucide="shopping-basket"></i>Daftar Belanja</button>
+          <button type="button" class="nav-link" data-go="keluarga"><i data-lucide="users"></i>Keluarga</button>
+          <button type="button" class="nav-link" data-go="profil"><i data-lucide="user-round"></i>Profil</button>
+        </nav>
+        <div class="family-box">
+          <p class="family-name">Keluarga</p>
+          <div class="avatar-group"></div>
+        </div>
+      </aside>
+
+      <!-- Bilah Atas (Header Pencarian & Profil) -->
+      <header class="topbar">
+        <div class="topbar-inner">
+          <span class="brand-small"><i data-lucide="book-heart"></i>Dapur Warisan</span>
+          <button type="button" class="search-pill" data-go="resep"><i data-lucide="search"></i><span>Cari resep keluarga…</span></button>
+          <button type="button" class="profile-button" data-go="profil" aria-label="Profil"><span class="avatar" id="top-avatar"></span></button>
+        </div>
+      </header>
+
+      <main class="content">
+        <section class="page" data-page="menu">
+          <div class="page-head">
+            <div>
+              <h1 class="title">Perencana Menu</h1>
+              <p class="muted" id="plan-count"></p>
+            </div>
+            <div class="week-nav">
+              <button type="button" class="btn btn-icon" id="week-prev" aria-label="Minggu sebelumnya"><i data-lucide="chevron-left"></i></button>
+              <span id="week-label"></span>
+              <button type="button" class="btn btn-icon" id="week-next" aria-label="Minggu berikutnya"><i data-lucide="chevron-right"></i></button>
+            </div>
+          </div>
+          <div class="progress"><div id="plan-progress"></div></div>
+
+          <div class="week-grid" id="week-grid"></div>
+
+          <div class="mobile-planner">
+            <div class="day-tabs" id="day-tabs"></div>
+            <div class="stack" id="day-slots"></div>
+          </div>
+
+          <div class="sticky-action">
+            <button type="button" class="btn btn-primary btn-lg raised" id="make-shopping-list"><i data-lucide="shopping-basket"></i>Buat Daftar Belanja</button>
+          </div>
+        </section>
+      </main>
+
+      <!-- Navigasi Bawah (Ponsel) -->
+      <nav class="bottom-nav">
+        <button type="button" data-go="beranda"><i data-lucide="house"></i>Beranda</button>
+        <button type="button" data-go="resep"><i data-lucide="book-open"></i>Resep</button>
+        <button type="button" data-go="favorit"><i data-lucide="heart"></i>Favorit</button>
+        <button type="button" data-go="menu"><i data-lucide="calendar-days"></i>Menu</button>
+        <button type="button" data-go="belanja"><i data-lucide="shopping-basket"></i>Belanja</button>
+        <button type="button" data-go="keluarga"><i data-lucide="users"></i>Keluarga</button>
+        <button type="button" data-go="profil"><i data-lucide="user-round"></i>Profil</button>
+      </nav>
+    </div>
+
+    <div id="toast" class="toast" role="status" hidden></div>
+
+    <dialog class="modal" id="modal-pick">
+      <div class="modal-box">
+        <div class="modal-head"><h2 class="heading" id="pick-title">Pilih resep</h2><button type="button" class="btn btn-icon" data-close aria-label="Tutup"><i data-lucide="x"></i></button></div>
+        <div class="modal-body">
+          <div class="search-box"><i data-lucide="search"></i><input id="pick-search" placeholder="Cari resep…" /></div>
+          <ul class="pick-list" id="pick-list"></ul>
+        </div>
+      </div>
+    </dialog>
+
+    <!-- Cetakan Komponen HTML (<template>) -->
+    <template id="tpl-slot">
+      <div class="slot">
+        <button type="button" class="slot-empty"><i data-lucide="plus"></i>Pilih resep</button>
+        <div class="slot-filled">
+          <button type="button" class="slot-pick"><img alt="" /><span class="slot-title"></span></button>
+          <button type="button" class="slot-clear" aria-label="Kosongkan"><i data-lucide="x"></i></button>
+        </div>
+      </div>
+    </template>
+
+    <template id="tpl-pick-item">
+      <li><button type="button" class="pick-item"><img alt="" /><span><strong class="pick-name"></strong><small class="muted pick-sub"></small></span></button></li>
+    </template>
+
+    <script src="lucide.min.js"></script>
+    <script src="app.js"></script>
+  </body>
+</html>

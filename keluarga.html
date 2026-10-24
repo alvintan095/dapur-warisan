@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="id-ID">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Grup Keluarga — Dapur Warisan</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,500;0,600;0,700;1,500&family=Nunito:wght@400;500;600;700;800&display=swap" />
+    <link rel="stylesheet" href="style.css" />
+    <script>
+      if (localStorage.getItem('dapur-warisan-dark') === '1') document.documentElement.classList.add('dark');
+      if (!localStorage.getItem('dapur-warisan-user')) location.replace('index.html');
+    </script>
+  </head>
+  <body data-page="keluarga">
+    <div id="app" class="layout">
+      <!-- Navigasi Samping (Desktop) - Total 7 Menu Fitur -->
+      <aside class="sidebar">
+        <button type="button" class="brand" data-go="beranda">
+          <span class="brand-mark"><i data-lucide="book-heart"></i></span>Dapur Warisan
+        </button>
+        <nav class="side-nav">
+          <button type="button" class="nav-link" data-go="beranda"><i data-lucide="house"></i>Beranda</button>
+          <button type="button" class="nav-link" data-go="resep"><i data-lucide="book-open"></i>Koleksi Resep</button>
+          <button type="button" class="nav-link" data-go="favorit"><i data-lucide="heart"></i>Resep Favorit</button>
+          <button type="button" class="nav-link" data-go="menu"><i data-lucide="calendar-days"></i>Menu Mingguan</button>
+          <button type="button" class="nav-link" data-go="belanja"><i data-lucide="shopping-basket"></i>Daftar Belanja</button>
+          <button type="button" class="nav-link" data-go="keluarga"><i data-lucide="users"></i>Keluarga</button>
+          <button type="button" class="nav-link" data-go="profil"><i data-lucide="user-round"></i>Profil</button>
+        </nav>
+        <div class="family-box">
+          <p class="family-name">Keluarga</p>
+          <div class="avatar-group"></div>
+        </div>
+      </aside>
+
+      <!-- Bilah Atas (Header Pencarian & Profil) -->
+      <header class="topbar">
+        <div class="topbar-inner">
+          <span class="brand-small"><i data-lucide="book-heart"></i>Dapur Warisan</span>
+          <button type="button" class="search-pill" data-go="resep"><i data-lucide="search"></i><span>Cari resep keluarga…</span></button>
+          <button type="button" class="profile-button" data-go="profil" aria-label="Profil"><span class="avatar" id="top-avatar"></span></button>
+        </div>
+      </header>
+
+      <main class="content">
+        <section class="page" data-page="keluarga">
+          <div class="family-layout">
+            <div class="stack-lg">
+              <header class="family-hero">
+                <p class="hero-label">Grup keluarga</p>
+                <h1 class="title" id="family-name"></h1>
+                <div class="hero-row">
+                  <span class="family-code" id="family-code"></span>
+                  <button type="button" class="btn btn-secondary no-border" id="copy-code"><i data-lucide="copy"></i>Salin kode</button>
+                </div>
+              </header>
+
+              <section>
+                <div class="section-head">
+                  <h2 class="heading-lg" id="member-count">Anggota</h2>
+                  <button type="button" class="btn btn-primary" id="invite-open"><i data-lucide="user-plus"></i>Undang</button>
+                </div>
+                <ul class="list-card" id="member-list"></ul>
+              </section>
+            </div>
+
+            <section>
+              <h2 class="heading">Aktivitas Terbaru</h2>
+              <ol class="timeline" id="activity-list"></ol>
+              <p class="muted" id="activity-empty" hidden>Belum ada aktivitas.</p>
+            </section>
+          </div>
+        </section>
+      </main>
+
+      <!-- Navigasi Bawah (Ponsel) -->
+      <nav class="bottom-nav">
+        <button type="button" data-go="beranda"><i data-lucide="house"></i>Beranda</button>
+        <button type="button" data-go="resep"><i data-lucide="book-open"></i>Resep</button>
+        <button type="button" data-go="favorit"><i data-lucide="heart"></i>Favorit</button>
+        <button type="button" data-go="menu"><i data-lucide="calendar-days"></i>Menu</button>
+        <button type="button" data-go="belanja"><i data-lucide="shopping-basket"></i>Belanja</button>
+        <button type="button" data-go="keluarga"><i data-lucide="users"></i>Keluarga</button>
+        <button type="button" data-go="profil"><i data-lucide="user-round"></i>Profil</button>
+      </nav>
+    </div>
+
+    <div id="toast" class="toast" role="status" hidden></div>
+
+    <dialog class="modal" id="modal-invite">
+      <div class="modal-box">
+        <div class="modal-head"><h2 class="heading">Undang Anggota</h2><button type="button" class="btn btn-icon" data-close aria-label="Tutup"><i data-lucide="x"></i></button></div>
+        <form class="modal-body" id="invite-form">
+          <label class="field"><span>Nama anggota</span><input name="name" placeholder="mis. Budi Santoso" /></label>
+          <label class="field"><span>Email atau nomor WhatsApp</span><input name="contact" placeholder="mis. 0812 3456 7890" /></label>
+          <p class="small muted">Atau bagikan kode <strong class="ink" id="invite-code"></strong> agar mereka bisa bergabung saat mendaftar.</p>
+          <button type="submit" class="btn btn-primary btn-block">Kirim Undangan</button>
+        </form>
+      </div>
+    </dialog>
+
+    <!-- Cetakan Komponen HTML (<template>) -->
+    <template id="tpl-member">
+      <li class="member">
+        <span class="avatar"></span>
+        <div class="member-text"><p class="member-name"></p><p class="small muted member-sub"></p></div>
+        <span class="role"></span>
+      </li>
+    </template>
+
+    <script src="lucide.min.js"></script>
+    <script src="app.js"></script>
+  </body>
+</html>
